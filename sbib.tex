@@ -106,7 +106,7 @@ Le jugement apporté, peut quand à lui être de deux types distinct~\cite{Farme
 	\item[Implicite] Le jugement n'est plus une affirmation, mais un comportement. C'est en effet l'action d'une personne vis à vis d'un sujet qui atteste de la réputation de celui-ci.
 \end{description}
 
-Par ailleurs, les systèmes de réputation sont généralement tous fondés autour de trois axes principaux~\cite{HoffmanZageNita2007}, la Formulation, l'Application et la Dispersion.
+Par ailleurs, les systèmes de réputation sont généralement tous fondés autour de trois axes principaux~\cite{HoffmanZageNita2007} : la Formulation, l'Application et la Dispersion.
 
 \subsubsection{La Formulation}
 C'est au cours de cette étapes que l'algorithme de calcul de réputation est enoncé dans sa formulation théorique.
@@ -125,6 +125,26 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 
 \section{Etat de l'art}
 Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
+
+\subsection{Tulungan}
+Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
+L'algorithme part du postulat qu'un utilisateur peut à la fois contribuer à la classification de contenu, et noter du contenu.
+Il s'éxécute en trois phase : la phase d'Initialisation, la phase de Contribution et Notation, et la phase de Calcul~\cite{Tulungan2013}.
+
+La phase d'Initialisation a lieu à chaque fois qu'un nouvel uilisateur apparaît, ou qu'une nouvelle catégorie d'URL est crée.
+Ainsi les valeurs de contributions et de notations sont initialisées avec une valeur proche de zéro.
+
+La phase de contribution et de notation permet à chaque participants de prendre part à la catégorisation en exprimant si un contenu web appartient ou non à différentes catégories.
+Par ailleurs au cours de cette phase seront choisit des noteurs potentiels (car ils sont susceptibles de donner une mauvaise métrique) en fonction de leurs précédentes contributions et notations.
+Ceci a pour but de séléctionner des personnes en rapport avec le contenu qu'il leurs sera demandé de noter.
+Dernière étape de cette phase, la notation à proprement parler. Les participants doivent alors noter trois URLs en exprimant si elles sont bien catégorisées.
+Deux des URLs sont des URLs de contrôle, dont les catégories d'appartenances sont bien connues.
+La dernière est quand à elle l'URL dont on souhaite déterminer si la catégorisation est pertinente ou non.
+Les trois URLs sont présentées de manière à ce que l'utilisateur ne sache pas laquelle est la réelle cible de l'algorithme.
+L'algorithme considère alors que si un utilisateur réponds correctement aux deux URLs connu, alors il est probable que celui-ci ai répondu de manière sérieuse à la troisième.
+Cette approche peut être comparée aux Captcha.
+
+La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations.
 
 %------------------------------------------------
 
