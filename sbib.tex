@@ -76,8 +76,8 @@ Les Systèmes de Notations} % Subtitle
 %\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
 
 \begin{abstract}
-	Ce document de synthèse a pour but de traiter des systèmes de notation en informatique.
-	Il abordera ainsi les systèmes de notations dans leur généralité en guise d'introduction.
+	Ce document de synthèse a pour but de traiter des systèmes de réputation en informatique.
+	Il abordera ainsi les systèmes de réputation dans leur généralité en guise d'introduction.
 	Sera ensuite présenté un état de l'art des différents algorithmes de notations.
 \end{abstract}
 
@@ -89,7 +89,7 @@ Les Systèmes de Notations} % Subtitle
 %	ESSAY BODY
 %----------------------------------------------------------------------------------------
 
-\section*{Introduction}
+\section{Introduction}
 Les systèmes de réputation sont à la base de nos prises de décisions, en l'absence de meilleurs informations concernant celles-ci.
 Ils ont de ce fait une part extrement importante depuis l'apparition d'internet, car sans donner de métriques concernant la qualité d'un contenu Web,
 il serait quasiment impossible pour une personne de trouver un résultat pertinant lors d'une recherche internet, d'estimer le risque avant un achat en ligne,
@@ -98,7 +98,7 @@ Ayant conscience de l'enjeu qu'ils représentent, il est donc intéressant de se
 
 Ainsi, en guise d'introduction, il sera proposé de voir ce qu'est une réputation, et quelles sont les caractéristiques générales d'un système de réputation.
 
-\subsection*{Définition de la réputation}
+\subsection{Définition de la réputation}
 De manière naïve, la réputation pourrait se réduire au fait que quelqu'un apporte un jugement sur quelque chose~\cite{FarmerGlass2010}.
 Le jugement apporté, peut quand à lui être de deux types distinct~\cite{FarmerGlass2010}.
 \begin{description}
@@ -106,8 +106,24 @@ Le jugement apporté, peut quand à lui être de deux types distinct~\cite{Farme
 	\item[Implicite] Le jugement n'est plus une affirmation, mais un comportement. C'est en effet l'action d'une personne vis à vis d'un sujet qui atteste de la réputation de celui-ci.
 \end{description}
 
+Par ailleurs, les systèmes de réputation sont généralement tous fondés autour de trois axes principaux~\cite{HoffmanZageNita2007}, la Formulation, l'Application et la Dispersion.
 
-\section*{Etat de l'art}
+\subsubsection{La Formulation}
+C'est au cours de cette étapes que l'algorithme de calcul de réputation est enoncé dans sa formulation théorique.
+Plus précisement, c'est au cours de cette phase que sont exprimés comment seront colléctée les données utilisées, ainsi que leurs type.
+Enfin, il est précisé sous quelle forme l'algorithme rendra son résultat. Celui-ci peut être binaire, discret ou continu.
+
+\subsubsection{L'Application}
+Il s'agit de l'implémentation de l'algorithme.
+Contrairement à la Formulation, cette étape prends en compte les différentes contraintes du milieu dans lequel l'algorithme va être appliqué.
+Il s'agit alors de respecter la métrique voulue, tout en essayant d'être resistant aux attaques malicieuses.
+Ainsi il est notamment discuté des méthodes de stockage et de calculs qui vont être utilisées.
+
+\subsubsection{La Dispersion}
+La Dispersion correspond aux méthodes employées afin de transmettre l'information relative à la réputation d'une entité aux différents acteurs concernés.
+Il sera alors discuté de la manière dont la réputation est stockée, comment celle-ci est transmise, et sa redondance.
+
+\section{Etat de l'art}
 Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
 
 %------------------------------------------------
