@@ -126,6 +126,20 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 \section{Etat de l'art}
 Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
 
+\subsection{Système de Feedback}
+L'idée principale de cet méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'uune action aposteriori.
+Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
+
+Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisé de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demander de s'évaluer mutuellement sous les 60 jours.
+Les évaluations peuvent avoir les valeur suivante : +1 (la transaction s'est très bien déroulée), 0 (la transaction s'est déroulée correctement, mais sans plus), -1 (la transaction s'est mal déroulée).
+Ensuite la somme des évaluations est effectuée ce qui donne la réputation d'un membre.
+
+eBay rajoute cependant plusieurs contraintes afin d'éviter les débordements.
+La première variante est que lorsque plusieurs transactions entre un même vendeur et un même acheteur sont effectués la même semaine, on ne répercute pas immédiatement la réputation de chacun mais on attend la fin de la semaine, puis on regarde s'il y a plus de votes positif ou négatif et enfin on ajoute un point à la réputation de l'acteur si son bilan hebdomadaire est positif ou on retranche un point de sa réputation s'il est négatif.
+La seconde variation est une protection des vendeurs importants ayant plus d'un an d'ancienneté : les membres ne peuvent pas laisser de vôte négatif ou neutre avant une semaine.
+
+Ces modifications sont là pour empêcher des actions de décridibilisation, en revanche rien ne protège d'une fausse amélioration de la réputation.
+
 \subsection{Tulungan}
 Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
 L'algorithme part du postulat qu'un utilisateur peut à la fois contribuer à la classification de contenu, et noter du contenu.
