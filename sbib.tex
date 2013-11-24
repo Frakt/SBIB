@@ -126,6 +126,18 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 \section{Etat de l'art}
 Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
 
+\subsection{WikiTrust}
+Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article.
+En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
+ce qui a été reécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
+et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur.
+L'indice de confiance global de l'article est ensuite reévalué.
+
+La réputation d'un auteur est calculé d'une manière similaire, à savoir que lorsqu'un article est modifié,
+la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
+
+Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
+
 \subsection{Système de Feedback}
 L'idée principale de cet méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'une action à posteriori.
 Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
