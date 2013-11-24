@@ -127,7 +127,7 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
 
 \subsection{Système de Feedback}
-L'idée principale de cet méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'uune action aposteriori.
+L'idée principale de cet méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'une action à posteriori.
 Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
 
 Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisé de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demander de s'évaluer mutuellement sous les 60 jours.
@@ -158,7 +158,10 @@ Les trois URLs sont présentées de manière à ce que l'utilisateur ne sache pa
 L'algorithme considère alors que si un utilisateur réponds correctement aux deux URLs connu, alors il est probable que celui-ci ai répondu de manière sérieuse à la troisième.
 Cette approche peut être comparée aux Captcha.
 
-La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations.
+La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations des URLs, des noteurs et des contributeurs.
+
+Pour finir sur Tulungan, il est interessant de noter que celui-ci est un algorithme "consensus-independant", car il n'a besoins que de 20\% de participants honnête pour etre efficace (contrairement à des algorithmes plus classiques necessitant un proportion de participants honnête de l'ordre de 50\%),
+et est resistant contre le "self-promoting" (modélisé par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsection{Système de Digg}
 Digg est un site web de partage d'article communautaire, un membre lit un article sur l'internet ou écrit un article sur un espace personnel, puis il le soumet à Digg.
