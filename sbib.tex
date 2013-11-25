@@ -139,7 +139,7 @@ la réputation de l'auteur original est elle aussi modifié en fonction de la qu
 Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
 
 \subsection{Système de Feedback}
-L'idée principale de cet méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'une action à posteriori.
+L'idée principale de cette méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'une action à posteriori.
 Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
 
 Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisé de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demander de s'évaluer mutuellement sous les 60 jours.
@@ -150,7 +150,56 @@ eBay rajoute cependant plusieurs contraintes afin d'éviter les débordements.
 La première variante est que lorsque plusieurs transactions entre un même vendeur et un même acheteur sont effectués la même semaine, on ne répercute pas immédiatement la réputation de chacun mais on attend la fin de la semaine, puis on regarde s'il y a plus de votes positif ou négatif et enfin on ajoute un point à la réputation de l'acteur si son bilan hebdomadaire est positif ou on retranche un point de sa réputation s'il est négatif.
 La seconde variation est une protection des vendeurs importants ayant plus d'un an d'ancienneté : les membres ne peuvent pas laisser de vôte négatif ou neutre avant une semaine.
 
-Ces modifications sont là pour empêcher des actions de décridibilisation, en revanche rien ne protège d'une fausse amélioration de la réputation.
+Ces modifications sont là pour empêcher des actions de décrédibilisation, en revanche rien ne protège d'une fausse amélioration de la réputation.
+
+\subsection{Karma}
+\subsubsection{Concept}
+Le Karma permet d'évaluer la réputation uniquement d'une personne au sein d'une communauté Web. Le nombre de points Karma est attribué en fonction :
+\begin{itemize}
+	\item De la vieillesse de l'utilisateur au sein de la communauté
+	\item Des actions auxquelles il a participé
+	\item Des résultats qu'il a obtenus
+	\item De ce que pense les autres utilisateurs
+\end{itemize}
+Inclure le Karma dans le système de réputation d'un site Web permet de rendre celui-ci plus performant et plus proche de la réalité. Il est d'ailleurs rarement utilisé seul pour cacluler une réputation mais associé à d'autres algorithmes.
+
+Il existe deux formes de Karma et une combinaison :
+\begin{description}
+	\item[Participation] calcule le Karma en fonction de la participation du membre de a communauté
+	\item[Qualité] calcule le Karma en fonction de la qualité des contributions du membre
+	\item[Robuste] est une combinaison des deux précédentes
+\end{description}
+
+\subsubsection{Calcul du Karma, modèle de participation}
+La calcul de la réputation grâce à ce modèle se fait via l'attribution de points. Lorsqu'un membre effectue une action au sein de la communauté, un nombre de points lui est attribué en fonction de cette action. La réputation de ce membre est donc la somme des points obtenus.
+
+Il existe également, un système de points négatifs. Lorsqu'un membre effectue une mauvaise action, on lui attribue un nombre de points négatifs correspondant à cette mauvaise action. Le système est le même que celui des points positifs, excepté qu'un score élevé correspond à une mauvaise réputation.
+
+\subsubsection{Calcul du Karma, modèle de qualité}
+Dans ce modèle, le nombre de contributions n'a pas d'importance. Seule compte la qualité de ces dernières. 
+
+Le modèle de Feedback utilisé par eBay décrit précédemment est un exemple de modèle de qualité du Karma.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=12cm]{karma.png} 
+	\end{center}
+	\caption{Modèle robuste~\cite{FarmerGlass2010}}
+	\label{robusteKarma}
+\end{figure}
+
+\subsubsection{Calcul du Karma, modèle robuste}
+En combinant les deux modèles précédents, on obtient le modèle robuste, comme le montre la figure~\ref{robusteKarma}. 
+
+\subsubsection{Reddit.com}
+Reddit.com est un site communautaire qui permet à chaque membre de soumettre des liens aux autres membres qui peuvent ensuite voter pour ce lien. Les membres peuvent également commenter les liens proposer et voter pour ou contre les commentaires.
+
+A chaque membre est associé un "Karma". Ce dernier est calculé en fonction des votes des membres. Lorsqu'un membre vote pour un lien proposé, le karma du membre qui a proposé le lien est augmenté d'un point. Lorsqu'un membre vote contre un lien proposé, le karma du membre qui a proposé le lien est diminué d'un point. Si le membre a obtenu plus de votes négatifs que de votes positifs, son karma est donc négatif. Les liens proposés par des membres qui ont un bon karma sont plus facilement visibles par les autres membres, que les liens proposés par des membres qui ont un moins bon karma~\cite{RedditTroll}.
+
+De même, le karma d'un membre est augmenté d'un point lorsqu'un autre membre vote pour un de ses commentaires et est diminué d'un point lorsqu'un autre membre vote contre~\cite{RedditTroll}.
+
+\subsubsection{Comment contrôler le karma ?}
+Expliquer comment reddit tente de contrer les trolls ?
 
 \subsection{Tulungan}
 Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
@@ -183,6 +232,8 @@ L'algorithme est donc simple : il n'y a pas de votes négatif, la réputation d'
 
 L'un des principaux avantages est que ce système ne permet pas de discréditation et qu'il n'attise pas l'augmentation artificiel car l'enjeu est moindre, il s'agit d'une question de temps.
 En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteur et le nombre de votants.
+
+\subsection{}
 
 %------------------------------------------------
 
