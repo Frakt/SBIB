@@ -91,25 +91,36 @@ Les Systèmes de Notations} % Subtitle
 
 \section{Introduction}
 Les systèmes de réputation sont à la base de nos prises de décisions, en l'absence de meilleurs informations concernant celles-ci.
-Ils ont de ce fait une part extrement importante depuis l'apparition d'internet, car sans donner de métriques concernant la qualité d'un contenu Web,
+Ils ont de ce fait une part extrement importante depuis l'apparition d'internet, car en l'absence de métriques concernant la qualité d'un contenu Web,
 il serait quasiment impossible pour une personne de trouver un résultat pertinant lors d'une recherche internet, d'estimer le risque avant un achat en ligne,
 de s'assurer de la qualité d'un contenu consommé, etc...
 Ayant conscience de l'enjeu qu'ils représentent, il est donc intéressant de se pencher sur ceux-ci, afin de comprendre leur fonctionnement.
 
-Ainsi, en guise d'introduction, il sera proposé de voir ce qu'est une réputation, et quelles sont les caractéristiques générales d'un système de réputation.
+%Ainsi, en guise d'introduction, il sera proposé de voir ce qu'est une réputation, et quelles sont les caractéristiques générales d'un système de réputation.
 
 \subsection{Définition de la réputation}
 De manière naïve, la réputation pourrait se réduire au fait que quelqu'un apporte un jugement sur quelque chose~\cite{FarmerGlass2010}.
-Le jugement apporté, peut quand à lui être de deux types distinct~\cite{FarmerGlass2010}.
+Le jugement apporté, peut quand à lui être de deux types distincts~\cite{FarmerGlass2010}.
 \begin{description}
 	\item[Explicite] Le jugement émis peut être directe ou indirecte, mais quoi qu'il en soit, il s'agit d'une affirmation émise par l'auteur du jugement.
 	\item[Implicite] Le jugement n'est plus une affirmation, mais un comportement. C'est en effet l'action d'une personne vis à vis d'un sujet qui atteste de la réputation de celui-ci.
 \end{description}
 
+\subsection{Définition de la confiance}
+La confiance est intimement liée à la réputation. Comme dit précédemment, il s'agit d'estimer sa décision avec un montant d'information minimal.
+Cette prise de risque repose sur la confiance que l'on attribue à une réputation, dont l'on peut donner les définitions suivantes :
+\begin{description}
+	\item[Définition 1] Trust is the subjective probability by which an in-dividual, A, expects that another individual, B, performs a given action on which its welfare depends~\cite{JosangIsmailBoyd2007}.
+	\item[Définition 2]Trust is the extent to which one party is willing to depend on something or somebody in a given situation with a feeling of relative security, even though negative consequences are possible~\cite{JosangIsmailBoyd2007}.
+\end{description}
+
+Cependant, il n'est pas possible de définir formellement la confiance, car un modèle de celle-ci est difficile à établir sans singulariser cette dernière.
+
+\subsection{Généralités}
 Par ailleurs, les systèmes de réputation sont généralement tous fondés autour de trois axes principaux~\cite{HoffmanZageNita2007} : la Formulation, l'Application et la Dispersion.
 
 \subsubsection{La Formulation}
-C'est au cours de cette étapes que l'algorithme de calcul de réputation est enoncé dans sa formulation théorique.
+C'est au cours de cette étape que l'algorithme de calcul de réputation est enoncé dans sa formulation théorique.
 Plus précisement, c'est au cours de cette phase que sont exprimés comment seront colléctée les données utilisées, ainsi que leurs type.
 Enfin, il est précisé sous quelle forme l'algorithme rendra son résultat. Celui-ci peut être binaire, discret ou continu.
 
@@ -129,26 +140,26 @@ Il s'agit dans cette partie de voir quels sont les différents systèmes de rép
 \subsection{WikiTrust}
 Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article.
 En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
-ce qui a été reécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
-et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur.
-L'indice de confiance global de l'article est ensuite reévalué.
+ce qui a été réécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
+et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur, et de son temps restée inchangée.
+L'indice de confiance global de l'article est ensuite réévalué.
 
-La réputation d'un auteur est calculé d'une manière similaire, à savoir que lorsqu'un article est modifié,
+La réputation d'un auteur est calculée d'une manière similaire, à savoir que lorsqu'un article est modifié,
 la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
 
 Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
 
 \subsection{Système de Feedback}
-L'idée principale de cette méthode est de permettre d'évoluer un ou plusieurs acteurs en fonction d'une action à posteriori.
+L'idée principale de cette méthode est de permettre d'évaluer un ou plusieurs acteurs en fonction d'une action à posteriori.
 Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
 
-Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisé de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demander de s'évaluer mutuellement sous les 60 jours.
+Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisée de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demandées de s'évaluer mutuellement sous les 60 jours.
 Les évaluations peuvent avoir les valeur suivante : +1 (la transaction s'est très bien déroulée), 0 (la transaction s'est déroulée correctement, mais sans plus), -1 (la transaction s'est mal déroulée).
 Ensuite la somme des évaluations est effectuée ce qui donne la réputation d'un membre.
 
 eBay rajoute cependant plusieurs contraintes afin d'éviter les débordements.
 La première variante est que lorsque plusieurs transactions entre un même vendeur et un même acheteur sont effectués la même semaine, on ne répercute pas immédiatement la réputation de chacun mais on attend la fin de la semaine, puis on regarde s'il y a plus de votes positif ou négatif et enfin on ajoute un point à la réputation de l'acteur si son bilan hebdomadaire est positif ou on retranche un point de sa réputation s'il est négatif.
-La seconde variation est une protection des vendeurs importants ayant plus d'un an d'ancienneté : les membres ne peuvent pas laisser de vôte négatif ou neutre avant une semaine.
+La seconde variation est une protection des vendeurs importants ayant plus d'un an d'ancienneté : les membres ne peuvent pas laisser de vôtes négatif ou neutre avant une semaine.
 
 Ces modifications sont là pour empêcher des actions de décrédibilisation, en revanche rien ne protège d'une fausse amélioration de la réputation.
 
@@ -225,13 +236,13 @@ Pour finir sur Tulungan, il est interessant de noter que celui-ci est un algorit
 et est resistant contre le "self-promoting" (modélisé par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsection{Système de Digg}
-Digg est un site web de partage d'article communautaire, un membre lit un article sur l'internet ou écrit un article sur un espace personnel, puis il le soumet à Digg.
+Digg est un site web de partage d'article communautaire, un membre lit un article sur internet ou écrit un article sur un espace personnel, puis il le soumet à Digg.
 Ensuite les autres membres du site votent pour ou contre cet article et s'il obtient assez de voix il est publié en page d'accueil de Digg.
 
 L'algorithme est donc simple : il n'y a pas de votes négatif, la réputation d'un article ne peut que croître, une fois le nombre de voix critique atteint, il est publié en première page, si non, au bout d'un certain temps, l'article est supprimé des propositions.
 
-L'un des principaux avantages est que ce système ne permet pas de discréditation et qu'il n'attise pas l'augmentation artificiel car l'enjeu est moindre, il s'agit d'une question de temps.
-En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteur et le nombre de votants.
+L'un des principaux avantages est que ce système ne permet pas de discréditation et qu'il n'attise pas l'augmentation artificielle car l'enjeu est moindre, il s'agit d'une question de temps.
+En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteurs et le nombre de votants.
 
 \subsection{Rater-Rating}
 \subsubsection{Concept}
