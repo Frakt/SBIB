@@ -99,8 +99,12 @@ Ayant conscience de l'enjeu qu'ils représentent, il est donc intéressant de se
 %Ainsi, en guise d'introduction, il sera proposé de voir ce qu'est une réputation, et quelles sont les caractéristiques générales d'un système de réputation.
 
 \section{Aspect des systèmes de réputation}
+Cette partie a pour but d'introduire différents termes et concepts concernant les systèmes de réputation en général afin de mieux apréhender le sujet.
+
 \subsection{Généralités}
 \subsubsection{Définitions}
+Nous allons essayer ici de donner les définitions de deux concepts fondamentaux des systèmes de réputation.
+
 \paragraph{La réputation}
 De manière naïve, la réputation pourrait se réduire au fait que quelqu'un apporte un jugement sur quelque chose~\cite{FarmerGlass2010}.
 Le jugement apporté, peut quand à lui être de deux types distincts~\cite{FarmerGlass2010}.
@@ -119,16 +123,35 @@ Cette prise de risque repose sur la confiance que l'on attribue à une réputati
 
 Cependant, il n'est pas possible de définir formellement la confiance, car un modèle de celle-ci est difficile à établir sans singulariser cette dernière.
 
-\subsection{Donner son avis}
+\subsubsection{Donner son avis}
+Il s'agit ici de donner un aperçu des différents moyen d'exprimer et de restituer un avis.
+
 \paragraph{Métriques continues}
 \paragraph{Métriques discrètes}
 \paragraph{Métriques qualitatives}
 
-\section{Différentes classes d'algorithmes}
-\subsection{User driven}
-\subsection{Content driven}
-\subsection{Centralisé}
-\subsection{Décentralisé}
+\subsection{Différentes classes d'algorithmes}
+\subsubsection{User driven}
+\subsubsection{Content driven}
+\subsubsection{Centralisé}
+Les systèmes de réputations peuvent avoir une architecture centralisée~\cite{JosangIsmailBoyd2007}.
+Ils reposent alors sur la notion d'autorité centrale.
+Il s'agit d'un centre de réputation ayant pour rôle de collecter l'ensemble des évaluations auprès des différents participants, de calculer les différentes réputationsi, et de les rendre publiquement accessible pour l'ensemble des participants.
+On a donc deux caractéristiques importantes des systèmes centralisés :
+\begin{description}
+	\item[Un protocole de communication centralisé]permettant de communiquer avec le centre de réputation, aussi bien pour soumettre une note, que pour consulter les différentes réputations.
+	\item[Un système de calcul de réputation centralisé]collectant les votes dans le but d'évaluer l'ensemble des participants.
+\end{description}
+
+\subsubsection{Distribué}
+Les systèmes de réputation distribués ne possèdent pas d'autorité centrale à laquelle se réferrer et / ou soumettre des votes~\cite{JosangIsmailBoyd2007}.
+Par contre ces systèmes possèdent de multiples "entrepots" consultable à la demande.
+Il s'agit le plus souvent des différents participants au système qui enregistre l'historique de leur transactions.
+Comme pour les sytèmes centralisés, on observe deux caractéristiques fondamentales :
+\begin{description}
+	\item[Un protocole de communication décentralisé]offrant la possibilité aux différents participants de trouver et de consulter "l'historique" d'un membre avant une transaction.
+	\item[Un système de calcul de réputation décentralisé commun]permettant de calculer une métrique de réputation grâce à "l'historique" précedemment récupéré.
+\end{description}
 
 \subsection{Une architecture partagée}
 Par ailleurs, les systèmes de réputation sont généralement tous fondés autour de trois axes principaux~\cite{HoffmanZageNita2007} : la Formulation, l'Application et la Dispersion.
