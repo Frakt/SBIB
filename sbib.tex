@@ -126,13 +126,28 @@ Cependant, il n'est pas possible de définir formellement la confiance, car un m
 \subsubsection{Donner son avis}
 Il s'agit ici de donner un aperçu des différents moyen d'exprimer et de restituer un avis.
 
-\paragraph{Métriques continues}
 \paragraph{Métriques discrètes}
-\paragraph{Métriques qualitatives}
+Les métriques discrètes sont pour le plus souvent des affirmations verbales qualitative concernant le contenu noté ou à noter.
+Elles sont utilisées car il est plus facile pour une personne de raisonner avec ce type de métriques plutôt qu'avec des systèmes continusi~\cite{JosangIsmailBoyd2007}.
+Cependant ces métriques ne sont pas facilement manipulable dans les algorithmes de calculs de réputations.
+Ils utilisent alors des systèmes d'heuristiques afin de les exploiter.
+
+\paragraph{Métriques continues}
+A l'inverse des métriques discrètes, les mériques continues sont facilement exploitable par les algorithmes de calculs de réputations.
+Ils sont souvent utilisés dans des systèmes ne nécessitant pas l'intervention humaine afin d'obtenir des informations concernant la qualité d'un contenu.
 
 \subsection{Différentes classes d'algorithmes}
 \subsubsection{User driven}
+Dans ce type d'algorithmes il est question de demander à l'utilisateur de qualifier la qualité d'un contenu qu'il a consulté~\cite{Tulungan2013}.
+Il s'agit le plus souvent d'une réputation explicite.
+Beaucoup de sites Web utilisent ce genre de systèmes.
+
 \subsubsection{Content driven}
+Dans ces systèmes de réputation, la qualité d'une contribution est évaluée par son contenu~\cite{Tulungan2013}.
+Contrairement aux algorithmes user driven, ici l'évaluation se fait à l'insu de l'utilisateur.
+Il s'agit le plus souvent d'un calcul de réputation implicite.
+On peut par exemple cité le systèmes de réputation de pages de l'encyclopédie Wikipedia (WikiTrust) qui utilise cette approche afin d'évaluer la qualité des articles~\cite{WikiTrustSite}.
+
 \subsubsection{Centralisé}
 Les systèmes de réputations peuvent avoir une architecture centralisée~\cite{JosangIsmailBoyd2007}.
 Ils reposent alors sur la notion d'autorité centrale.
