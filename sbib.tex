@@ -196,6 +196,29 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 \section{Présentation des algorithmes et de leurs approches mathématiques}
 \subsection{Captcha}
 \subsection{Loi de Beta}
+\subsubsection{Concept}
+L'idée fondatrice de la Loi de Beta détaillée dans %% TODO ref Loi de Beta
+est que les actions du passées sont condamnées à se reproduire.
+
+L'approche consiste donc a évaluer à postériori les actions qui ont eu lieu
+afin de déterminer une réputation représentant les actions futures.
+
+\subsubsection{Algorithme}
+L'algorithme comporte une partie qui calcul la réputation des utilisateurs à partir d'un ensemble d'entrées (comme les notes d'eBay).
+Le point centrale est la fonction de densité Beta qui est utilisée pour représenter la probabilité d'événements binaires (feedback positif ou négatif).
+Ensuite, la fonction de réputation se repose sur la fonction Beta, mais au lieu de fournir une entrée binaire (un couple de nombre de feedback positif et négatif), fournis un couple de degrés de réputation.
+Une fonction d'évaluation de la réputation obtenue qui permet de convertire un résultat mathématique en résultat humainement interprêtable via une conversion en probabilité.
+La récolte des données est un point important, car afin d'établir une réputation de nombreuses sources sont exploitées et de nombreux feedbacks sont récoltés provenant de différent agents. Ces agents n'ont pas tous la même réputation, ainsi, les feedbacks sont pondérés en fonction de la réputation de ceux qui les émettent.
+Ces données sont à filtrer en fonction de leur ancienneté, en effet, un agent peut changer de comportement au cours du temps, le modèle inclura donc un facteur d'oublie pour résoudre ce problème.
+
+Enfin, une seconde partie qui vise à stocker et à accéder aux réputations (centralisée comme chez eBay ou décentralisée comme dans PGP).
+
+\subsubsection{Forces}
+Il s'agit d'un système simple et suffisemment flexible pour s'adapter à un grand nombre de situations, il permet de résister à l'auto-promotion, à la discréditation artificielle ainsi qu'aux changements de comportements et il permet de supporté à la fois une architecture centralisée et décentralisée.
+
+\subsubsection{Faiblesses}
+En revanche, cet algorithme met beaucoup de contraintes sur les données entrantes et il présuppose que l'authenfication est en place et est robuste, ce qui ne le prémunis pas, le cas contraire des attaques de la part de multiples comptes ou d'anonymes.
+
 \subsection{2-Phases Machine Learning}
 \subsection{Network flow}
 \subsection{MANET (Trouver le vrai nom)}
@@ -218,20 +241,6 @@ La réputation d'un auteur est calculée d'une manière similaire, à savoir que
 la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
 
 Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
-
-\subsection{Système de Feedback}
-L'idée principale de cette méthode est de permettre d'évaluer un ou plusieurs acteurs en fonction d'une action à posteriori.
-Lorsqu'une action est réalisée, les parties prenantes se notent les unes les autres et la réputation des différents acteurs devient la somme des avis des acteurs ayant déjà eu des interactions avec celui-ci.
-
-Si nous prennons le cas d'Ebay qui a mis en application ce principe, leur implantation est réalisée de la manière suivante : une fois la vente conclue, le vendeur et l'acheteur, les deux parties perenante de la transaction, se voient demandées de s'évaluer mutuellement sous les 60 jours.
-Les évaluations peuvent avoir les valeur suivante : +1 (la transaction s'est très bien déroulée), 0 (la transaction s'est déroulée correctement, mais sans plus), -1 (la transaction s'est mal déroulée).
-Ensuite la somme des évaluations est effectuée ce qui donne la réputation d'un membre.
-
-eBay rajoute cependant plusieurs contraintes afin d'éviter les débordements.
-La première variante est que lorsque plusieurs transactions entre un même vendeur et un même acheteur sont effectués la même semaine, on ne répercute pas immédiatement la réputation de chacun mais on attend la fin de la semaine, puis on regarde s'il y a plus de votes positif ou négatif et enfin on ajoute un point à la réputation de l'acteur si son bilan hebdomadaire est positif ou on retranche un point de sa réputation s'il est négatif.
-La seconde variation est une protection des vendeurs importants ayant plus d'un an d'ancienneté : les membres ne peuvent pas laisser de vôtes négatif ou neutre avant une semaine.
-
-Ces modifications sont là pour empêcher des actions de décrédibilisation, en revanche rien ne protège d'une fausse amélioration de la réputation.
 
 \subsection{Karma}
 \subsubsection{Concept}
@@ -306,12 +315,17 @@ Pour finir sur Tulungan, il est interessant de noter que celui-ci est un algorit
 et est resistant contre le "self-promoting" (modélisé par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsection{Système de Digg}
+\subsubsection{Concept}
 Digg est un site web de partage d'article communautaire, un membre lit un article sur internet ou écrit un article sur un espace personnel, puis il le soumet à Digg.
 Ensuite les autres membres du site votent pour ou contre cet article et s'il obtient assez de voix il est publié en page d'accueil de Digg.
 
+\subsubsection{Algorithme}
 L'algorithme est donc simple : il n'y a pas de votes négatif, la réputation d'un article ne peut que croître, une fois le nombre de voix critique atteint, il est publié en première page, si non, au bout d'un certain temps, l'article est supprimé des propositions.
 
+\subsubsection{Forces}
 L'un des principaux avantages est que ce système ne permet pas de discréditation et qu'il n'attise pas l'augmentation artificielle car l'enjeu est moindre, il s'agit d'une question de temps.
+
+\subsubsection{Faiblesses}
 En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteurs et le nombre de votants.
 
 \subsection{Rater-Rating}
