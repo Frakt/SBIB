@@ -188,9 +188,32 @@ Il sera alors discuté de la manière dont la réputation est stockée, comment 
 
 \section{Les attaques / faiblesses connues des systèmes de réputations}
 \subsection{Définition de la notion d'attaque}
+Nous qualifierons d'attaque tout usage détourné du système de réputation,
+c'est-à-dire, tout ce qui vise à déstabiliser le système pour qu'il y ait une
+perte de confiance des acteurs réels en celui-ci due à une réputation calculée
+différente de la réputation réelle.
+
+Les acteurs réels sont tous les acteurs qui utilisent le système de réputation
+comme base pour leur décisions.
+
 \subsection{Les grandes familles de comportement malicieux}
 \subsubsection{L'auto promotion}
+L'auto-promotion est un procédé qui vise à augmenter artificiellement la réputation
+d'un acteur.
+
+L'approche classique pour atteindre cet objectif consiste à créer un grand nombre
+de comptes (ou à simuler un grand nombre d'acteurs anonyme quand le système le permet)
+et à émettre un grand nombre d'avis positifs à destiné de l'acteur que l'on souhaite
+promouvoir.
+
+Cette technique est également utilisée pour la discréditation artificielle.
+
 \subsubsection{L'usurpation d'identité}
+L'usurpation d'identité est une attaque qui vise le système d'authentification,
+elle à pour but de prendre l'identité d'un acteur donné pour lui faire faire des
+actions précise dans le but d'altérer artificiellement sa propre réputation ou celle
+d'un autre.
+
 \subsubsection{Wormhole / Blackhole}
 
 \section{Présentation des algorithmes et de leurs approches mathématiques}
