@@ -247,7 +247,7 @@ Cette approche peut être comparée aux Captcha.
 La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations des URLs, des noteurs et des contributeurs.
 
 \subsubsection{Forces}
-Tulungan est un algorithme que l'on qualifiera de "consensu-independant", car il n'a besoins que de 20\% de participants honnêtes pour être efficace, là où des algorithmes plus classiques necessitent une proportion de participants honnêtes de l'ordre de 50\%.
+Tulungan est un algorithme dit "consensu-independant", car il n'a besoins que de 20\% de participants honnêtes pour être efficace, là où des algorithmes plus classiques necessitent une proportion de participants honnêtes de l'ordre de 50\%.
 Ce traits lui permet ainsi de résister à l'auto-promotion (modélisé dans l'article par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsubsection{Faiblesses}
@@ -278,7 +278,21 @@ Il s'agit d'un système simple et suffisemment flexible pour s'adapter à un gra
 \subsubsection{Faiblesses}
 En revanche, cet algorithme met beaucoup de contraintes sur les données entrantes et il présuppose que l'authenfication est en place et est robuste, ce qui ne le prémunis pas, le cas contraire des attaques de la part de multiples comptes ou d'anonymes.
 
-\subsection{2-Phases Machine Learning}
+\subsection{2-Phase Machine Learning}
+\subsubsection{Concept}
+Ce type d'algorithme agit en deux temps.
+Comme les documents à évaluer sont souvent complexe, il s'agit dans la première phase, de récupérer un ensemble de métriques sensées caractériser le contenu à évaluer.
+Dans le cas de WikiTrust, algorithme que nous allons pas la suite détailler, il s'agit d'une quinzaine d'attributs, dont :
+\begin{itemize}
+	\item La réputation de l'auteur
+	\item L'anonimat de l'auteur
+	\item Le temps entre les révisions du contenu
+\end{itemize}
+Viens ensuite la deuxième phase de l'algorithme, où sont utilisés les métriques précédement calculées afin de calculer l'indice de réputation.
+Dans le cas de WikiTrust, il s'agit d'un arbre de décision entrainés au préalable sur des jeux de tests.
+
+Nous allons maintenant présenté WikiTrust dans un cadre plus général.
+
 \subsubsection{WikiTrust}
 Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article.
 En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
@@ -289,7 +303,11 @@ L'indice de confiance global de l'article est ensuite réévalué.
 La réputation d'un auteur est calculée d'une manière similaire, à savoir que lorsqu'un article est modifié,
 la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
 
-Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
+\subsubsection{Forces}
+WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
+
+\subsubsection{Faiblesses}
+Partant du même postulat, une personne possédant une haute réputation, et décidant de devenir malveillante à postériori, peu alors corrompre le système.
 
 \subsection{Network flow}
 \subsection{MANET (Trouver le vrai nom)}
