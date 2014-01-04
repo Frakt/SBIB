@@ -218,12 +218,48 @@ d'un autre.
 
 \section{Présentation des algorithmes et de leurs approches mathématiques}
 \subsection{Captcha}
+\subsubsection{Concept}
+Les captcha sont des tests de tests de Turing ayant pour but de différencier une machine d'un humain.
+Il s'agit le plus souvent d'une image représentant un mot déformé visuellement rendant ainsi les algorithmes de reconnaissance de caractères difficilement utilisables.
+Il peut aussi s'agir de reconnaissance de son, chose tout aussi difficile à traiter algorithmiquement.
+Il est alors demandé à l'utilisateur d'entrer la valeur de ce qu'il lui a été demandé de reconnaitre, afin de prouver qu'il est bien un humain.
+
+Nous allons voir un algorithme de calcul de réputation reposant sur le concept de captcha.
+
+\subsubsection{Tulungan}
+Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
+L'algorithme part du postulat qu'un utilisateur peut à la fois contribuer à la classification de contenu, et noter du contenu.
+Il s'éxécute en trois phase : la phase d'Initialisation, la phase de Contribution et Notation, et la phase de Calcul~\cite{Tulungan2013}.
+
+La phase d'Initialisation a lieu à chaque fois qu'un nouvel uilisateur apparaît, ou qu'une nouvelle catégorie d'URL est crée.
+Ainsi les valeurs de contributions et de notations sont initialisées avec une valeur proche de zéro.
+
+La phase de contribution et de notation permet à chaque participants de prendre part à la catégorisation en exprimant si un contenu web appartient ou non à différentes catégories.
+Par ailleurs au cours de cette phase seront choisit des noteurs potentiels (car ils sont susceptibles de donner une mauvaise métrique) en fonction de leurs précédentes contributions et notations.
+Ceci a pour but de séléctionner des personnes en rapport avec le contenu qu'il leurs sera demandé de noter.
+Dernière étape de cette phase, la notation à proprement parler. Les participants doivent alors noter trois URLs en exprimant si elles sont bien catégorisées.
+Deux des URLs sont des URLs de contrôle, dont les catégories d'appartenances sont bien connues.
+La dernière est quand à elle l'URL dont on souhaite déterminer si la catégorisation est pertinente ou non.
+Les trois URLs sont présentées de manière à ce que l'utilisateur ne sache pas laquelle est la réelle cible de l'algorithme.
+L'algorithme considère alors que si un utilisateur réponds correctement aux deux URLs connu, alors il est probable que celui-ci ai répondu de manière sérieuse à la troisième.
+Cette approche peut être comparée aux Captcha.
+
+La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations des URLs, des noteurs et des contributeurs.
+
+\subsubsection{Forces}
+Tulungan est un algorithme que l'on qualifiera de "consensu-independant", car il n'a besoins que de 20\% de participants honnêtes pour être efficace, là où des algorithmes plus classiques necessitent une proportion de participants honnêtes de l'ordre de 50\%.
+Ce traits lui permet ainsi de résister à l'auto-promotion (modélisé dans l'article par une attaque Sybile)~\cite{Tulungan2013}.
+
+\subsubsection{Faiblesses}
+Tulungan est relativement couteux en "main d'oeuvre humaine" ce qui peut être problématique dans certains cas, et qui interdit de l'utiliser dans un contexte entièrement automatisé.
+Par ailleurs nous ne savons actuellement pas comment réagit ce système à d'autres types d'attaques.
+
 \subsection{Loi de Beta}
 \subsubsection{Concept}
 L'idée fondatrice de la Loi de Beta détaillée dans %% TODO ref Loi de Beta
 est que les actions du passées sont condamnées à se reproduire.
 
-L'approche consiste donc a évaluer à postériori les actions qui ont eu lieu
+L'approche consiste donc à évaluer à postériori les actions qui ont eu lieu
 afin de déterminer une réputation représentant les actions futures.
 
 \subsubsection{Algorithme}
@@ -243,17 +279,7 @@ Il s'agit d'un système simple et suffisemment flexible pour s'adapter à un gra
 En revanche, cet algorithme met beaucoup de contraintes sur les données entrantes et il présuppose que l'authenfication est en place et est robuste, ce qui ne le prémunis pas, le cas contraire des attaques de la part de multiples comptes ou d'anonymes.
 
 \subsection{2-Phases Machine Learning}
-\subsection{Network flow}
-\subsection{MANET (Trouver le vrai nom)}
-
-\section{Conclusion}
-\subsection{Matrice de comparaison}
-\subsection{Questions ouvertes}
-
-\section{Etat de l'art}
-Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
-
-\subsection{WikiTrust}
+\subsubsection{WikiTrust}
 Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article.
 En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
 ce qui a été réécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
@@ -264,6 +290,17 @@ La réputation d'un auteur est calculée d'une manière similaire, à savoir que
 la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
 
 Enfin, WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
+
+\subsection{Network flow}
+\subsection{MANET (Trouver le vrai nom)}
+
+\section{Conclusion}
+\subsection{Matrice de comparaison}
+\subsection{Questions ouvertes}
+
+\section{Etat de l'art}
+Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
+
 
 \subsection{Karma}
 \subsubsection{Concept}
@@ -314,28 +351,6 @@ De même, le karma d'un membre est augmenté d'un point lorsqu'un autre membre v
 \subsubsection{Comment contrôler le karma ?}
 Expliquer comment reddit tente de contrer les trolls ?
 
-\subsection{Tulungan}
-Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
-L'algorithme part du postulat qu'un utilisateur peut à la fois contribuer à la classification de contenu, et noter du contenu.
-Il s'éxécute en trois phase : la phase d'Initialisation, la phase de Contribution et Notation, et la phase de Calcul~\cite{Tulungan2013}.
-
-La phase d'Initialisation a lieu à chaque fois qu'un nouvel uilisateur apparaît, ou qu'une nouvelle catégorie d'URL est crée.
-Ainsi les valeurs de contributions et de notations sont initialisées avec une valeur proche de zéro.
-
-La phase de contribution et de notation permet à chaque participants de prendre part à la catégorisation en exprimant si un contenu web appartient ou non à différentes catégories.
-Par ailleurs au cours de cette phase seront choisit des noteurs potentiels (car ils sont susceptibles de donner une mauvaise métrique) en fonction de leurs précédentes contributions et notations.
-Ceci a pour but de séléctionner des personnes en rapport avec le contenu qu'il leurs sera demandé de noter.
-Dernière étape de cette phase, la notation à proprement parler. Les participants doivent alors noter trois URLs en exprimant si elles sont bien catégorisées.
-Deux des URLs sont des URLs de contrôle, dont les catégories d'appartenances sont bien connues.
-La dernière est quand à elle l'URL dont on souhaite déterminer si la catégorisation est pertinente ou non.
-Les trois URLs sont présentées de manière à ce que l'utilisateur ne sache pas laquelle est la réelle cible de l'algorithme.
-L'algorithme considère alors que si un utilisateur réponds correctement aux deux URLs connu, alors il est probable que celui-ci ai répondu de manière sérieuse à la troisième.
-Cette approche peut être comparée aux Captcha.
-
-La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations des URLs, des noteurs et des contributeurs.
-
-Pour finir sur Tulungan, il est interessant de noter que celui-ci est un algorithme "consensus-independant", car il n'a besoins que de 20\% de participants honnête pour etre efficace (contrairement à des algorithmes plus classiques necessitant un proportion de participants honnête de l'ordre de 50\%),
-et est resistant contre le "self-promoting" (modélisé par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsection{Système de Digg}
 \subsubsection{Concept}
