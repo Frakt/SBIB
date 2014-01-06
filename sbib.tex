@@ -310,6 +310,40 @@ WikiTrust part du postulat que les personnes malveillante possède pas ou peu de
 Partant du même postulat, une personne possédant une haute réputation, et décidant de devenir malveillante à postériori, peu alors corrompre le système.
 
 \subsection{Network flow}
+\subsubsection{Concept}
+Les algorithmes de type Network Flow sont une application de la théorie des graphes.
+Il s'agit de donner à un noeud (supposé extrèmement fiable) une valeur de départ appelée "énergie", qui dans le cadre des systèmes de réputations, correspond à une valeur de confiance distribuable.
+Viens ensuite l'étape au cours de laquelle le noeud de départ va devoir "énergiser" les noeuds avec lesquels il a eu un contact (au sens transaction nécessitant une confiance), à hauteur de la qualité de l'échange.
+Cependant, le noeud ne peut distribuer qu'un nombre finit d'"énergies" correspondant à la valeur de son énergie de départ.
+Il devra donc diviser celle-ci afin de la distribuer pour l'ensemble des noeuds, chaque noeud recevant un montant pondéré par la qualité de la transaction.
+
+Les noeuds ayant reçu de l'"énergie" peuvent à leur tour distribuer celle-ci aux noeuds avec lesquels ils effectuent des transactions en suivant les règles définies précédement.
+
+Enfin ce système de réputation possède un nombre de valeurs de réputation distribuable fini.
+
+\subsubsection{EigenTrust}
+EigenTrust est un algorithme basé sur une structure Network flow. Il est utilisé dans les réseaux Peer to Peer afin d'évaluer les participants du réseau.
+Il fonctionne en plusieurs étapes.
+
+\paragraph{Normalisation de la confiance locale}
+Afin d'éviter qu'un participant malicieu puisse donner des valeurs de confiances arbitrairement élevée à d'autres participants malicieux, et au contraire des valeurs de confiance basse aux participants honnêtes, l'algorithme commence par effectuer une normalisation de la confiance locale selon la formule suivante :
+\paragraph{}
+$c_{ij} = \frac{\max{(s_{ij},0)}}{\sum \max{(s_{ij},0)}}$
+\paragraph{}
+Avec $s_{ij} = \sum tr_{ij}$ et $tr_{ij}$ correspondant à la qualité d'une transaction entre un participant $i$ et un participant $j$, et pouvant prendre pour valeur $1$ ou $-1$.
+\paragraph{}
+Cette normalisation permet alors de ramener la confiance locale entre $0$ et $1$.
+Par ailleurs elle permet de pouvoir comparer les confiances d'un noeud par rapports aux différents noeuds qu'il a noté, sans pour autant savoir s'il s'agit de bonnes ou de mauvaises réputations.
+
+\paragraph{Aggrégation des valeurs de confiances locale}
+Viens ensuite une étape d'aggrégation des différentes valeurs de confiances locales pour chaque noeud.
+Supposons qu'un noeud $i$ souhaite aggreger les différentes valeurs de confiances locale d'un noeud $k$, il va alors demander à tous les noeuds qu'il connait la confiance que ceux-ci donnent au noeud $k$, et ponderera cette confiance par la confiance qu'il accorde aux noeuds intérogés.
+On a donc la relation suivante :
+
+\paragraph{}
+$t_{ik} = \sum_{j} c_{ij}c_{jk}$
+\paragraph{}
+
 \subsection{MANET (Trouver le vrai nom)}
 
 \section{Conclusion}
