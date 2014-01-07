@@ -356,9 +356,9 @@ Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de 
 \subsubsection{Concept}
 Les systèmes de réputation Bayesiens permettent de calculer la réputation d'un individu en fonction des notes que celui-ci attribue.
 
-Ces systèmes incitent donc les membres à noter et surtout à bien noter. En effet, ils comparent la note attribuée à la note moyenne donnée par tous les autres membres. Si la note attribuée est trop éloignée de la note moyenne, la réputation du membre sera diminuée, à l'inverse, elle sera augmentée.
+Ces systèmes, user-driven, incitent les membres à noter et surtout à bien noter. En effet, ils comparent la note attribuée à la note moyenne donnée par tous les autres membres. Si la note attribuée est trop éloignée de la note moyenne, la réputation du membre sera diminuée, à l'inverse, elle sera augmentée.
 
-Les MANET utilisent ces systèmes de réputation pour s'assurer qu'un message soit bien transmis par les appareils. Les appareils "`voisins"' se jugent les uns les autres. Si un appareil juge mal un autre appareil, sa réputation sera diminuée~\cite{Bayesian}.
+Les MANET utilisent ces systèmes de réputation pour s'assurer qu'un message soit bien transmis par les appareils. Les appareils "voisins" se jugent les uns les autres. Si un appareil juge mal un autre appareil, sa réputation sera diminuée~\cite{Bayesian}.
 
 \subsubsection{Algorithme de Rater Rating}
 Le rater-rating est un système de réputation utilisé pour les sites web collaboratifs. Ce système tente d'encourager les membres à noter.
@@ -369,19 +369,7 @@ Les auteurs choisis pour contrôler le travail d'un autre auteur l'ont été en 
 
 Grâce à cette méthode, la réputation d'un auteur est calculée en fonction de la qualité de son travail et également en fonction de la qualité de ces notations. Un auteur qui ne note jamais ou presque jamais obtiendra une mauvaise note de notation et sa réputation sera donc diminuée. C'est en cela que ce système permet d'inciter les auteurs à noter~\cite{RaterRating}.
 
-Une des limites de ce système de réputation est qu'un bon noteur peut obtenir une mauvaise réputation si tous les autres noteurs sont des mauvais noteurs avec une bonne réputation. Il faut donc que plus de 50\% des contributeurs soient des personnes honnêtes.
-
-Ce système a pour but de :
-\begin{itemize}
-	\item inciter les contributeurs à noter
-	\item encourager les auteurs à publier
-	\item pénaliser les mauvais noteurs
-	\item noter le travail afin de lui attribuer une note de crédibilité
-	\item noter les notes afin d'attribuer aux notes une note de crédibilité~\cite{RaterRating}
-\end{itemize}
-
 Cette méthode est notamment utilisée pour noter les contributions sur le site Wikipédia. 
-
 
 Son algorithme se décompose de la façon suivante :
 \begin{description}
@@ -439,6 +427,19 @@ R_{i} = \omega U_{i} + (1-\omega) V_{i}
 $$
 La réputation d'un auteur tient donc compte de sa réputation de contributeur et de sa réputation de noteur.
 \end{description}
+
+\subsubsection{Forces}
+L'algorithme de Rater Rating a pour but de :
+\begin{itemize}
+	\item inciter les contributeurs à noter
+	\item encourager les auteurs à publier
+	\item pénaliser les mauvais noteurs
+	\item noter le travail afin de lui attribuer une note de crédibilité
+	\item noter les notes afin d'attribuer aux notes une note de crédibilité~\cite{RaterRating}
+\end{itemize}
+
+\subsubsection{Faiblesses}
+Une des limites de ce système de réputation est qu'un bon noteur peut obtenir une mauvaise réputation si tous les autres noteurs sont des mauvais noteurs avec une bonne réputation. Il faut donc que plus de 50\% des contributeurs soient des personnes honnêtes.
 
 \subsection{Matrice de comparaison}
 
