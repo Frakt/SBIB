@@ -319,7 +319,7 @@ Il devra donc diviser celle-ci afin de la distribuer pour l'ensemble des noeuds,
 
 Les noeuds ayant reçu de l'"énergie" peuvent à leur tour distribuer celle-ci aux noeuds avec lesquels ils effectuent des transactions en suivant les règles définies précédement.
 
-Enfin ce système de réputation possède un nombre de valeurs de réputation distribuable fini.
+Enfin ce système de réputation possède un nombre de valeurs de réputation distribuable sont souvent fini.
 
 \subsubsection{EigenTrust}
 EigenTrust est un algorithme basé sur une structure Network flow. Il est utilisé dans les réseaux Peer to Peer afin d'évaluer les participants du réseau.
@@ -327,9 +327,9 @@ Il fonctionne en plusieurs étapes.
 
 \paragraph{Normalisation de la confiance locale}
 Afin d'éviter qu'un participant malicieu puisse donner des valeurs de confiances arbitrairement élevée à d'autres participants malicieux, et au contraire des valeurs de confiance basse aux participants honnêtes, l'algorithme commence par effectuer une normalisation de la confiance locale selon la formule suivante :
-\paragraph{}
-$c_{ij} = \frac{\max{(s_{ij},0)}}{\sum \max{(s_{ij},0)}}$
-\paragraph{}
+\begin{center}
+	$c_{ij} = \frac{\max{(s_{ij},0)}}{\sum \max{(s_{ij},0)}}$
+\end{center}
 Avec $s_{ij} = \sum tr_{ij}$ et $tr_{ij}$ correspondant à la qualité d'une transaction entre un participant $i$ et un participant $j$, et pouvant prendre pour valeur $1$ ou $-1$.
 \paragraph{}
 Cette normalisation permet alors de ramener la confiance locale entre $0$ et $1$.
@@ -339,10 +339,18 @@ Par ailleurs elle permet de pouvoir comparer les confiances d'un noeud par rappo
 Viens ensuite une étape d'aggrégation des différentes valeurs de confiances locales pour chaque noeud.
 Supposons qu'un noeud $i$ souhaite aggreger les différentes valeurs de confiances locale d'un noeud $k$, il va alors demander à tous les noeuds qu'il connait la confiance que ceux-ci donnent au noeud $k$, et ponderera cette confiance par la confiance qu'il accorde aux noeuds intérogés.
 On a donc la relation suivante :
+\begin{center}
+	$t_{ik} = \sum_{j} c_{ij}c_{jk}$
+\end{center}
+Si cette étape est étendu à une echelle globale, à savoir si un noeud demande à ses noeuds voisins qui eux même demandent à leurs noeuds voisins, et ainsi de suite, $t$ converge alors vers la valeur de confiance que l'ensemble des participants a envers un noeud.
 
-\paragraph{}
-$t_{ik} = \sum_{j} c_{ij}c_{jk}$
-\paragraph{}
+\subsubsection{Forces}
+Ce type d'approche permet de réduire considérablement le nombre de noeuds malicieux "solitaires", et grâce à la normalisation et à l'aggrégation, l'auto-promotion est fortement atténuée.
+
+\subsubsection{Faiblesses}
+Le système est cependant faiblement résistant à la notion de consensus.
+En effet, il suffirait d'un nombre de noeuds malicieux appartenant à un même groupe, et représentant 40\% des participants au système afin d'influencer le système de réputation.
+Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de noeuds malicieux dans un réseau Peer to Peer.
 
 \subsection{MANET (Trouver le vrai nom)}
 
