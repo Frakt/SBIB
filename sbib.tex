@@ -352,7 +352,6 @@ Le système est cependant faiblement résistant à la notion de consensus.
 En effet, il suffirait d'un nombre de noeuds malicieux appartenant à un même groupe, et représentant 40\% des participants au système afin d'influencer le système de réputation.
 Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de noeuds malicieux dans un réseau Peer to Peer.
 
-\subsection{MANET (Trouver le vrai nom)}
 \subsection{Bayesian}
 \subsubsection{Concept}
 Les systèmes de réputation Bayesiens permettent de calculer la réputation d'un individu en fonction des notes que celui-ci attribue.
@@ -388,13 +387,57 @@ Son algorithme se décompose de la façon suivante :
 \begin{description}
 	\item[Déterminer l'ensemble des auteurs noteurs] Cette étape a pour but de déterminer si un auteur \textit{i} a la capacité nécessaire pour noter un travail d'un document \textit{d}. Pour cela, il teste si les références utilisées par l'auteur \textit{i} sont les mêmes que celles utilisées pour réaliser le document \textit{d}. De plus, la proportion des documents référencés dans le travail de l'auteur \textit{i} par rapport aux documents référencés dans le document \textit{d} doit être suffisamment grande. Enfin, et cela paraît évident, l'auteur \textit{i} ne doit pas être un des auteurs du document \textit{d}.
 	\item[Obtenir l'ensemble des notes] Chaque auteur précédemment sélectionné peut attribuer au travail \textit{t} une note comprise entre -1 et +1.
-	\item[Calculer la note globale] La note du travail \textit{t} est la moyenne des notes données par chaque auteur précédemment sélectionné et pondéré par la réputation de l'auteur. Les notes des auteurs ayant une réputation négative ne sont pas prises en compte. Il est possible qu'aucun des auteurs sélectionnés n'ait donné une note ou qu'il n'existe pas d'auteurs avec une réputation positive pour donner de notes, dans ce cas, une note epsilon est attribuée au travail.
-	\item[Calculer la crédibilité de la note] La crédibilité est la moyenne des réputations des auteurs ayant noté le travail et ayant eux-mêmes une réputation positive multipliée par la proportion totale de noteurs ( 1 - 1/nombre de noteurs avec une réputation positive ). Cette multiplication permet d'éviter que l'on attribue une forte crédibilité à une note calculée à partir de peu de noteurs. Si la note vaut epsilon, alors sa crédibilité vaudra également epsilon.
+	\item[Calculer la note globale] La note du travail \textit{t} est la moyenne des notes données par chaque auteur précédemment sélectionné et pondéré par la réputation de l'auteur. Les notes des auteurs ayant une réputation négative ne sont pas prises en compte. Il est possible qu'aucun des auteurs sélectionnés n'ait donné une note ou qu'il n'existe pas d'auteurs avec une réputation positive pour donner de notes, dans ce cas, une note $\epsilon$ est attribuée au travail.
+	\item[Calculer la crédibilité de la note] La crédibilité de la note se calcule de la manière suivante :
+$$C_{t} = \bar{R}_{R>0} (1 - \frac{1}{|A_{R>0}|})$$
+
+$\bar{R}_{R>0}$ est la moyenne des réputations des membres ayant noté le travail \textit{t} (les noteurs ont tous une réputation positive).
+
+$A_{R>0}$ est l'ensemble des auteurs ayant une réputation positive.
+
+Cette multiplication permet d'éviter que l'on attribue une forte crédibilité à une note calculée à partir de peu de noteurs. Si la note vaut $\epsilon$, alors sa crédibilité vaudra également $\epsilon$.
 
 Nous pouvons alors remarquer que la réputation de l'auteur \textit{i} influence non seulement la note d'un travail que celui va évaluer, mais également, la crédibilité de la note globale attribuée.
 
-	\item[Calculer la réputation du contributeur] La réputation du contributeur est la réputation d'un auteur \textit{i} basée sur les notes obtenues pour ses contributions. Si c'est la première contribution de l'auteur, sa réputation de contributeur vaut 0.
-	\item[Calculer la réputation de la note]
+	\item[Calculer la réputation du contributeur] La réputation du contributeur est la réputation d'un auteur \textit{i} basée sur les notes obtenues pour ses contributions. La formule permettant de la calculer est la suivante : 
+$$
+U_{i} = \left\{
+	\begin{array}{ll}
+		(1 - \frac{1}{|E_{i}^{-\epsilon}|}) \frac{\bar{x_{i}}}{x_{max}} & \mbox{, |$E_{i}^{-\epsilon}$| > 0}\\
+		0 & \mbox{, |$E_{i}^{-\epsilon}$| = 0}
+	\end{array}
+\right.
+$$
+$E_{i}^{-\epsilon}$ est l'ensemble des contributions de l'auteur \textit{i} pour lesquelles il n'a pas obtenu une note ${\epsilon}$.
+
+$\bar{x_{i}}$ est la moyenne des notes obtenues par l'auteur \textit{i}.
+
+$x_{max}$ est la note maximale obtenue par l'auteur \textit{i} pour une de ses contributions.
+
+	\item[Calculer la réputation du noteur] La réputation du noteur est la réputation d'un auteur basée sur les notes qu'il a attribuées. La formule permettant de la calculer est la suivante :
+$$
+V_{i} = \left\{
+	\begin{array}{ll}
+		\bar{y_{i}} \frac{|D_{i}^{\epsilon}|}{|D_{i}|} & \mbox{, |$D_{i}$| > 0}\\
+		-1 & \mbox{, |$D_{i}^{\epsilon}$| > 0, |$D_{i}$| = 0}\\
+		0 & \mbox{, |$D$| = 0}
+	\end{array}
+\right.
+$$
+
+$\bar{y_{i}}$ est la moyenne des écarts entre la note attribuée par l'auteur \textit{i} à un travail \textit{t} et la moyenne des notes attribuées au travail \textit{t}.
+
+$D_{i}$ est l'ensemble des travaux notés par l'auteur \textit{i}.
+
+$D_{i}^{\epsilon}$ est l'ensemble des travaux qui n'ont pas encore été notés par l'auteur \textit{i}, mais dont il a été sélectionné comme noteur.
+
+Cette formule permet non seulement de pénaliser les mauvais noteurs (ceux qui donnent des notes volontairement trop élevées ou trop basses), mais également ceux qui ne notent pas grâce au rapport $\frac{|D_{i}^{\epsilon}|}{|D_{i}|}$.
+
+	\item[Calculer la réputation de l'auteur] La formule permettant de calculer la réputation de l'auteur est la suivante :
+$$
+R_{i} = \omega U_{i} + (1-\omega) V_{i}
+$$
+La réputation d'un auteur tient donc compte de sa réputation de contributeur et de sa réputation de noteur.
 \end{description}
 
 \subsection{Matrice de comparaison}
