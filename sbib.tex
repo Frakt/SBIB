@@ -312,7 +312,7 @@ Partant du même postulat, une personne possédant une haute réputation, et dé
 \subsection{Network flow}
 \subsubsection{Concept}
 Les algorithmes de type Network Flow sont une application de la théorie des graphes.
-Il s'agit de donner à un noeud (supposé extrèmement fiable) une valeur de départ appelée "énergie", qui dans le cadre des systèmes de réputations, correspond à une valeur de confiance distribuable.
+Il s'agit de donner à un noeud (supposé extrèmement fiable) une valeur de départ appelée "énergie", qui dans le cadre des systèmes de réputations, correspond à une valeur de confiance distribuable~\cite{ZieglerLausen2005}.
 Viens ensuite l'étape au cours de laquelle le noeud de départ va devoir "énergiser" les noeuds avec lesquels il a eu un contact (au sens transaction nécessitant une confiance), à hauteur de la qualité de l'échange.
 Cependant, le noeud ne peut distribuer qu'un nombre finit d'"énergies" correspondant à la valeur de son énergie de départ.
 Il devra donc diviser celle-ci afin de la distribuer pour l'ensemble des noeuds, chaque noeud recevant un montant pondéré par la qualité de la transaction.
@@ -322,7 +322,7 @@ Les noeuds ayant reçu de l'"énergie" peuvent à leur tour distribuer celle-ci 
 Enfin ce système de réputation possède un nombre de valeurs de réputation distribuable sont souvent fini.
 
 \subsubsection{EigenTrust}
-EigenTrust est un algorithme basé sur une structure Network flow. Il est utilisé dans les réseaux Peer to Peer afin d'évaluer les participants du réseau.
+EigenTrust est un algorithme basé sur une structure Network flow. Il est utilisé dans les réseaux Peer to Peer afin d'évaluer les participants du réseau~\cite{KamvarSchlosserGarciaMolina2003}.
 Il fonctionne en plusieurs étapes.
 
 \paragraph{Normalisation de la confiance locale}
