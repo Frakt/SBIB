@@ -353,6 +353,49 @@ En effet, il suffirait d'un nombre de noeuds malicieux appartenant à un même g
 Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de noeuds malicieux dans un réseau Peer to Peer.
 
 \subsection{MANET (Trouver le vrai nom)}
+\subsection{Bayesian}
+\subsubsection{Concept}
+Les systèmes de réputation Bayesiens permettent de calculer la réputation d'un individu en fonction des notes que celui-ci attribue.
+
+Ces systèmes incitent donc les membres à noter et surtout à bien noter. En effet, ils comparent la note attribuée à la note moyenne donnée par tous les autres membres. Si la note attribuée est trop éloignée de la note moyenne, la réputation du membre sera diminuée, à l'inverse, elle sera augmentée.
+
+Les MANET utilisent ces systèmes de réputation pour s'assurer qu'un message soit bien transmis par les appareils. Les appareils "`voisins"' se jugent les uns les autres. Si un appareil juge mal un autre appareil, sa réputation sera diminuée~\cite{Bayesian}.
+
+\subsubsection{Algorithme de Rater Rating}
+Le rater-rating est un système de réputation utilisé pour les sites web collaboratifs. Ce système tente d'encourager les membres à noter.
+
+Les sites collaboratifs ont besoin que des auteurs contrôlent le travail d'autres auteurs afin de s'assurer de la bonne réalisation de celui-ci. Cependant, on ne peut pas être sûr que ce contrôle sera bien effectué. Le but de cette méthode est donc de détecter les auteurs qui ne notent pas correctement ou qui ne notent jamais~\cite{RaterRating}.
+
+Les auteurs choisis pour contrôler le travail d'un autre auteur l'ont été en fonction de leur domaine d'expertise. Malgré cela, les contrôleurs peuvent ne pas noter le travail de la bonne façon.
+
+Grâce à cette méthode, la réputation d'un auteur est calculée en fonction de la qualité de son travail et également en fonction de la qualité de ces notations. Un auteur qui ne note jamais ou presque jamais obtiendra une mauvaise note de notation et sa réputation sera donc diminuée. C'est en cela que ce système permet d'inciter les auteurs à noter~\cite{RaterRating}.
+
+Une des limites de ce système de réputation est qu'un bon noteur peut obtenir une mauvaise réputation si tous les autres noteurs sont des mauvais noteurs avec une bonne réputation. Il faut donc que plus de 50\% des contributeurs soient des personnes honnêtes.
+
+Ce système a pour but de :
+\begin{itemize}
+	\item inciter les contributeurs à noter
+	\item encourager les auteurs à publier
+	\item pénaliser les mauvais noteurs
+	\item noter le travail afin de lui attribuer une note de crédibilité
+	\item noter les notes afin d'attribuer aux notes une note de crédibilité~\cite{RaterRating}
+\end{itemize}
+
+Cette méthode est notamment utilisée pour noter les contributions sur le site Wikipédia. 
+
+
+Son algorithme se décompose de la façon suivante :
+\begin{description}
+	\item[Déterminer l'ensemble des auteurs noteurs] Cette étape a pour but de déterminer si un auteur \textit{i} a la capacité nécessaire pour noter un travail d'un document \textit{d}. Pour cela, il teste si les références utilisées par l'auteur \textit{i} sont les mêmes que celles utilisées pour réaliser le document \textit{d}. De plus, la proportion des documents référencés dans le travail de l'auteur \textit{i} par rapport aux documents référencés dans le document \textit{d} doit être suffisamment grande. Enfin, et cela paraît évident, l'auteur \textit{i} ne doit pas être un des auteurs du document \textit{d}.
+	\item[Obtenir l'ensemble des notes] Chaque auteur précédemment sélectionné peut attribuer au travail \textit{t} une note comprise entre -1 et +1.
+	\item[Calculer la note globale] La note du travail \textit{t} est la moyenne des notes données par chaque auteur précédemment sélectionné et pondéré par la réputation de l'auteur. Les notes des auteurs ayant une réputation négative ne sont pas prises en compte. Il est possible qu'aucun des auteurs sélectionnés n'ait donné une note ou qu'il n'existe pas d'auteurs avec une réputation positive pour donner de notes, dans ce cas, une note epsilon est attribuée au travail.
+	\item[Calculer la crédibilité de la note] La crédibilité est la moyenne des réputations des auteurs ayant noté le travail et ayant eux-mêmes une réputation positive multipliée par la proportion totale de noteurs ( 1 - 1/nombre de noteurs avec une réputation positive ). Cette multiplication permet d'éviter que l'on attribue une forte crédibilité à une note calculée à partir de peu de noteurs. Si la note vaut epsilon, alors sa crédibilité vaudra également epsilon.
+
+Nous pouvons alors remarquer que la réputation de l'auteur \textit{i} influence non seulement la note d'un travail que celui va évaluer, mais également, la crédibilité de la note globale attribuée.
+
+	\item[Calculer la réputation du contributeur] La réputation du contributeur est la réputation d'un auteur \textit{i} basée sur les notes obtenues pour ses contributions. Si c'est la première contribution de l'auteur, sa réputation de contributeur vaut 0.
+	\item[Calculer la réputation de la note]
+\end{description}
 
 \section{Conclusion}
 \subsection{Matrice de comparaison}
@@ -426,39 +469,7 @@ L'un des principaux avantages est que ce système ne permet pas de discréditati
 \subsubsection{Faiblesses}
 En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteurs et le nombre de votants.
 
-\subsection{Rater-Rating}
-\subsubsection{Concept}
-Le rater-rating est un système de réputation utilisé pour les sites web collaboratifs. Ce système tente d'encourager les membres à noter.
 
-Les sites collaboratifs ont besoin que des auteurs contrôlent le travail d'autres auteurs afin de s'assurer de la bonne réalisation de celui-ci. Cependant, on ne peut pas être sûr que ce contrôle sera bien effectué. Le but de cette méthode est donc de détecter les auteurs qui ne notent pas correctement ou qui ne notent jamais~\cite{RaterRating}.
-
-Les auteurs choisis pour contrôler le travail d'un autre auteur l'ont été en fonction de leur domaine d'expertise. Malgré cela, les contrôleurs peuvent ne pas noter le travail de la bonne façon.
-
-Grâce à cette méthode, la réputation d'un auteur est calculée en fonction de la qualité de son travail et également en fonction de la qualité de ces notations. Un auteur qui ne note jamais ou presque jamais obtiendra une mauvaise note de notation et sa réputation sera donc diminuée. C'est en cela que ce système permet d'inciter les auteurs à noter~\cite{RaterRating}.
-
-Une des limites de ce système de réputation est qu'un bon noteur peut obtenir une mauvaise réputation si tous les autres noteurs sont des mauvais noteurs avec une bonne réputation. Il faut donc que plus de 50\% des contributeurs soient des personnes honnêtes.
-
-Ce système a pour but de :
-\begin{itemize}
-	\item inciter les contributeurs à noter
-	\item encourager les auteurs à publier
-	\item pénaliser les mauvais noteurs
-	\item noter le travail afin de lui attribuer une note de crédibilité
-	\item noter les notes afin d'attribuer aux notes une note de crédibilité~\cite{RaterRating}
-\end{itemize}
-
-\subsubsection{Algorithme}
-Cette méthode est notamment utilisée pour noter les contributions sur le site Wikipédia. Son algorithme se décompose de la façon suivante :
-\begin{description}
-	\item[Déterminer l'ensemble des auteurs noteurs] Cette étape a pour but de déterminer si un auteur \textit{i} a la capacité nécessaire pour noter un travail d'un document \textit{d}. Pour cela, il teste si les références utilisées par l'auteur \textit{i} sont les mêmes que celles utilisées pour réaliser le document \textit{d}. De plus, la proportion des documents référencés dans le travail de l'auteur \textit{i} par rapport aux documents référencés dans le document \textit{d} doit être suffisamment grande. Enfin, et cela paraît évident, l'auteur \textit{i} ne doit pas être un des auteurs du document \textit{d}.
-	\item[Obtenir l'ensemble des notes] Chaque auteur précédemment sélectionné peut attribuer au travail \textit{t} une note comprise entre -1 et +1.
-	\item[Calculer la note globale] La note du travail \textit{t} est la moyenne des notes données par chaque auteur précédemment sélectionné et pondéré par la réputation de l'auteur. Les notes des auteurs ayant une réputation négative ne sont pas prises en compte. Il est possible qu'aucun des auteurs sélectionnés n'ait donné une note ou qu'il n'existe pas d'auteurs avec une réputation positive pour donner de notes, dans ce cas, une note epsilon est attribuée au travail.
-	\item[Calculer la crédibilité de la note] La crédibilité est la moyenne des réputations des auteurs ayant noté le travail et ayant eux-mêmes une réputation positive multipliée par la proportion totale de noteurs ( 1 - 1/nombre de noteurs avec une réputation positive ). Cette multiplication permet d'éviter que l'on attribue une forte crédibilité à une note calculée à partir de peu de noteurs. Si la note vaut epsilon, alors sa crédibilité vaudra également epsilon.
-
-Nous pouvons alors remarquer que la réputation de l'auteur \textit{i} influence non seulement la note d'un travail que celui va évaluer, mais également, la crédibilité de la note globale attribuée.
-
-	\item[Calculer la réputation du contributeur] La réputation du contributeur est la réputation d'un auteur \textit{i} basée sur les notes obtenues pour ses contributions. Si c'est la première contribution de l'auteur, sa réputation de contributeur vaut 0.
-\end{description}
 
 %------------------------------------------------
 
