@@ -56,7 +56,7 @@
 %----------------------------------------------------------------------------------------
 
 \title{\textbf{Synthèse Bibliographique}\\ % Title
-Les Systèmes de Notations} % Subtitle
+Les Systèmes de Réputation} % Subtitle
 
 \author{\textsc{Brunisholz, Di Folco, Pigeon} % Author
 \\{\textit{INSA Lyon}}} % Institution
@@ -68,6 +68,7 @@ Les Systèmes de Notations} % Subtitle
 \begin{document}
 
 \maketitle % Print the title section
+\tableofcontents
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT AND KEYWORDS
@@ -77,6 +78,7 @@ Les Systèmes de Notations} % Subtitle
 
 \begin{abstract}
 	Ce document de synthèse a pour but de traiter des systèmes de réputation en informatique.
+	Il s'agira ici de comprendre pourquoi ces systèmes sont nécessaires, d'aborder leur fonctionnement.
 	Il abordera ainsi les systèmes de réputation dans leur généralité en guise d'introduction.
 	Sera ensuite présenté un état de l'art des différents algorithmes de notations.
 \end{abstract}
@@ -214,9 +216,11 @@ elle à pour but de prendre l'identité d'un acteur donné pour lui faire faire 
 actions précise dans le but d'altérer artificiellement sa propre réputation ou celle
 d'un autre.
 
-\subsubsection{Wormhole / Blackhole}
+\subsubsection{Le "whitewashing"}
+Le "whitewashing" correspond au fait pour une personne malicieuse de pouvoir annuler les pénalités (perte de réputations) acquise lors de son comportement.
+Il s'agit le plus souvent d'exploiter une vulnérabilité de l'algorithme afin de récupérer une réputation valable, dans le but de continuer son action malicieuse.
 
-\section{Présentation des algorithmes et de leurs approches mathématiques}
+\section{Présentation des algorithmes avec leurs approches mathématiques}
 \subsection{Captcha}
 \subsubsection{Concept}
 Les captcha sont des tests de tests de Turing ayant pour but de différencier une machine d'un humain.
@@ -282,22 +286,20 @@ En revanche, cet algorithme met beaucoup de contraintes sur les données entrant
 \subsubsection{Concept}
 Ce type d'algorithme agit en deux temps.
 Comme les documents à évaluer sont souvent complexe, il s'agit dans la première phase, de récupérer un ensemble de métriques sensées caractériser le contenu à évaluer.
-Dans le cas de WikiTrust, algorithme que nous allons pas la suite détailler, il s'agit d'une quinzaine d'attributs, dont :
+Dans le cas de WikiTrust, algorithme que nous allons par la suite détailler, il s'agit d'une quinzaine d'attributs, dont :
 \begin{itemize}
 	\item La réputation de l'auteur
 	\item L'anonimat de l'auteur
 	\item Le temps entre les révisions du contenu
 \end{itemize}
 Viens ensuite la deuxième phase de l'algorithme, où sont utilisés les métriques précédement calculées afin de calculer l'indice de réputation.
-Dans le cas de WikiTrust, il s'agit d'un arbre de décision entrainés au préalable sur des jeux de tests.
-
-Nous allons maintenant présenté WikiTrust dans un cadre plus général.
+Dans le cas de WikiTrust, il s'agit d'un arbre de décision préalablement entrainé sur des jeux de tests.
 
 \subsubsection{WikiTrust}
-Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article.
+Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article (centent driven).
 En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
 ce qui a été réécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
-et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur, et de son temps restée inchangée.
+et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur, et de son temps resté inchangé.
 L'indice de confiance global de l'article est ensuite réévalué.
 
 La réputation d'un auteur est calculée d'une manière similaire, à savoir que lorsqu'un article est modifié,
@@ -319,7 +321,7 @@ Il devra donc diviser celle-ci afin de la distribuer pour l'ensemble des noeuds,
 
 Les noeuds ayant reçu de l'"énergie" peuvent à leur tour distribuer celle-ci aux noeuds avec lesquels ils effectuent des transactions en suivant les règles définies précédement.
 
-Enfin ce système de réputation possède un nombre de valeurs de réputation distribuable sont souvent fini.
+Notons que ces systèmes de réputation possèdent un nombre de valeurs de réputation distribuable souvent fini.
 
 \subsubsection{EigenTrust}
 EigenTrust est un algorithme basé sur une structure Network flow. Il est utilisé dans les réseaux Peer to Peer afin d'évaluer les participants du réseau~\cite{KamvarSchlosserGarciaMolina2003}.
@@ -344,6 +346,8 @@ On a donc la relation suivante :
 \end{center}
 Si cette étape est étendu à une echelle globale, à savoir si un noeud demande à ses noeuds voisins qui eux même demandent à leurs noeuds voisins, et ainsi de suite, $t$ converge alors vers la valeur de confiance que l'ensemble des participants a envers un noeud.
 
+Enfin, notons ici qu'il s'agit d'un algorithme user driven décentralisé, même s'il possède quelques caractéristiques d'un système centralisé, telle que le fait que certains noeuds possèdent une confiance absolue non revendiquable (les noeuds de départ).
+
 \subsubsection{Forces}
 Ce type d'approche permet de réduire considérablement le nombre de noeuds malicieux "solitaires", et grâce à la normalisation et à l'aggrégation, l'auto-promotion est fortement atténuée.
 
@@ -351,6 +355,8 @@ Ce type d'approche permet de réduire considérablement le nombre de noeuds mali
 Le système est cependant faiblement résistant à la notion de consensus.
 En effet, il suffirait d'un nombre de noeuds malicieux appartenant à un même groupe, et représentant 40\% des participants au système afin d'influencer le système de réputation.
 Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de noeuds malicieux dans un réseau Peer to Peer.
+
+Enfin, les noeuds considérés comme sûre peuvent représenter des points d'attaques particulièrement interessant si l'on souhaite corrompre ce type de systèmes.
 
 \subsection{Bayesian}
 \subsubsection{Concept}
@@ -441,7 +447,46 @@ L'algorithme de Rater Rating a pour but de :
 \subsubsection{Faiblesses}
 Une des limites de ce système de réputation est qu'un bon noteur peut obtenir une mauvaise réputation si tous les autres noteurs sont des mauvais noteurs avec une bonne réputation. Il faut donc que plus de 50\% des contributeurs soient des personnes honnêtes.
 
-\subsection{Matrice de comparaison}
+\subsection{Matrices récapitulatives}
+\subsubsection{Caractéristiques}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	&User&Content&Centralisé&Décentralisé\tabularnewline
+	&driven&driven&&\tabularnewline
+	\hline
+	Tulungan&Oui&Non&Oui&Non\tabularnewline
+	\hline
+	Loi de Beta&Oui&Non&Oui&Oui\tabularnewline
+	\hline
+	WikiTrust&Non&Oui&Oui&Non\tabularnewline
+	\hline
+	EigenTrust&Oui&Non&Non&Oui\tabularnewline
+	\hline
+	RaterRating&Oui&Non&Oui&Non\tabularnewline
+	\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Attaques possibles}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+	\hline
+	&Auto Promotion&Whitewashing&Usurpation\tabularnewline
+	&&&d'identité\tabularnewline
+	\hline
+	Tulungan&Non&-&-\tabularnewline
+	\hline
+	Loi de Beta&Non&-&Oui\tabularnewline
+	\hline
+	WikiTrust&Non&Non&-\tabularnewline
+	\hline
+	EigenTrust&Oui&Non&-\tabularnewline
+	\hline
+	Rater Rating&Non&-&-\tabularnewline
+	\hline
+\end{tabular}
+\end{center}
 
 \section{Conclusion}
 Nous avons vu au cours de cette synthèse bibliographique les différentes caractéristiques des systèmes de réputation.
