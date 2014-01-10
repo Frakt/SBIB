@@ -32,6 +32,9 @@
 \usepackage{amsmath}
 
 \usepackage{mathpazo} % Use the Palatino font
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
 \makeatletter
@@ -76,6 +79,8 @@ Les Systèmes de Réputation} % Subtitle
 
 %\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
 
+\newpage
+
 \begin{abstract}
 	Ce document de synthèse a pour but de traiter des systèmes de réputation en informatique.
 	Il s'agira ici de comprendre pourquoi ces systèmes sont nécessaires et d'aborder leur fonctionnement général.
@@ -92,69 +97,71 @@ Les Systèmes de Réputation} % Subtitle
 
 \section{Introduction}
 Les systèmes de réputation sont à la base de nos prises de décisions, en l'absence de meilleurs informations concernant celles-ci.
-Ils ont de ce fait une part extrement importante depuis l'apparition d'internet, car en l'absence de métriques concernant la qualité d'un contenu Web,
-il serait quasiment impossible pour une personne de trouver un résultat pertinant lors d'une recherche internet, d'estimer le risque avant un achat en ligne,
+Ils sont extrêmement importants depuis l'apparition d'internet, car en l'absence de métriques concernant la qualité d'un contenu Web,
+il serait quasiment impossible pour une personne de trouver un résultat pertinent lors d'une recherche internet, d'estimer le risque avant un achat en ligne,
 de s'assurer de la qualité d'un contenu consommé, etc...
-Ayant conscience de l'enjeu qu'ils représentent, il est donc intéressant de se pencher sur ceux-ci, afin de comprendre leur fonctionnement, que ce soit d'un point de vue global, permettant de comprendre les différentes mécaniques misent en jeu, que d'un point de vue plus local centré sur certains algorithmes précis.
-Pour les mêmes raisons il est important de connaître les différentes attaques récurentes sur les systèmes de réputation.
+Ayant conscience de l'enjeu qu'ils représentent, il est donc intéressant de se pencher sur ceux-ci, afin de comprendre leur fonctionnement, que ce soit d'un point de vue global, permettant de comprendre les différentes mécaniques mises en jeu, que d'un point de vue plus local centré sur certains algorithmes précis.
+Pour les mêmes raisons, il est important de connaître les différentes attaques récurrentes sur les systèmes de réputation.
 
 %Ainsi, en guise d'introduction, il sera proposé de voir ce qu'est une réputation, et quelles sont les caractéristiques générales d'un système de réputation.
 
-\section{Aspect des systèmes de réputation}
-Cette partie a pour but d'introduire différents termes et concepts concernant les systèmes de réputation en général afin de mieux apréhender le sujet.
+\section{Aspects des systèmes de réputation}
+Cette partie a pour but d'introduire différents termes et concepts concernant les systèmes de réputation en général afin de mieux appréhender le sujet.
 
 \subsection{Généralités}
 \subsubsection{Définitions}
-Nous allons essayer ici de donner les définitions de deux concepts fondamentaux des systèmes de réputation.
+Nous allons ici donner les définitions de deux concepts fondamentaux des systèmes de réputation.
 
-\paragraph{La réputation}
+\paragraph{1. La réputation}
 De manière naïve, la réputation pourrait se réduire au fait que quelqu'un apporte un jugement sur quelque chose~\cite{FarmerGlass2010}.
-Le jugement apporté, peut quand à lui être de deux types distincts~\cite{FarmerGlass2010}.
+Le jugement apporté, peut quant à lui être de deux types distincts~\cite{FarmerGlass2010}.
 \begin{description}
-	\item[Explicite] Le jugement émis peut être directe ou indirecte, mais quoi qu'il en soit, il s'agit d'une affirmation émise par l'auteur du jugement.
+	\item[Explicite] Le jugement émis peut être direct ou indirect, mais quoi qu'il en soit, il s'agit d'une affirmation émise par l'auteur du jugement.
 	\item[Implicite] Le jugement n'est plus une affirmation, mais un comportement. C'est en effet l'action d'une personne vis à vis d'un sujet qui atteste de la réputation de celui-ci.
 \end{description}
 
-\paragraph{La confiance}
-La confiance est intimement liée à la réputation. Comme dit précédemment, il s'agit d'estimer sa décision avec un montant d'information minimal.
+\paragraph{2. La confiance}
+La confiance est intimement liée à la réputation. Comme dit précédemment, il s'agit d'estimer sa décision avec un nombre d'informations minimal.
 Cette prise de risque repose sur la confiance que l'on attribue à une réputation, dont l'on peut donner les définitions suivantes :
 \begin{description}
-	\item[Définition 1] Trust is the subjective probability by which an in-dividual, A, expects that another individual, B, performs a given action on which its welfare depends~\cite{JosangIsmailBoyd2007}.
-	\item[Définition 2]Trust is the extent to which one party is willing to depend on something or somebody in a given situation with a feeling of relative security, even though negative consequences are possible~\cite{JosangIsmailBoyd2007}.
+	\item[Définition 1] "Trust is the subjective probability by which an in-dividual, A, expects that another individual, B, performs a given action on which its welfare depends"~\cite{JosangIsmailBoyd2007}.
+	\item[Définition 2] "Trust is the extent to which one party is willing to depend on something or somebody in a given situation with a feeling of relative security, even though negative consequences are possible"~\cite{JosangIsmailBoyd2007}.
 \end{description}
 
 Cependant, il n'est pas possible de définir formellement la confiance, car un modèle de celle-ci est difficile à établir sans singulariser cette dernière.
 
 \subsubsection{Donner son avis}
-Il s'agit ici de donner un aperçu des différents moyen d'exprimer et de restituer un avis.
+Il s'agit ici de donner un aperçu des différents moyens d'exprimer et de restituer un avis.
 
 \paragraph{Métriques discrètes}
-Les métriques discrètes sont pour le plus souvent des affirmations verbales qualitative concernant le contenu noté ou à noter.
-Elles sont utilisées car il est plus facile pour une personne de raisonner avec ce type de métriques plutôt qu'avec des systèmes continus~\cite{JosangIsmailBoyd2007}.
-Cependant ces métriques ne sont pas facilement manipulable dans les algorithmes de calculs de réputations.
+Les métriques discrètes sont pour le plus souvent des affirmations verbales qualitatives concernant le contenu noté ou à noter.
+Elles sont utilisées, car il est plus facile pour une personne de raisonner avec ce type de métriques plutôt qu'avec des systèmes continus~\cite{JosangIsmailBoyd2007}.
+Cependant ces métriques ne sont pas facilement manipulables dans les algorithmes de calcul de réputation.
 Ils utilisent alors des systèmes d'heuristiques afin de les exploiter.
 
 \paragraph{Métriques continues}
-A l'inverse des métriques discrètes, les mériques continues sont facilement exploitable par les algorithmes de calculs de réputations.
+A l'inverse des métriques discrètes, les métriques continues sont facilement exploitables par les algorithmes de calcul de réputation.
 Ils sont souvent utilisés dans des systèmes ne nécessitant pas l'intervention humaine afin d'obtenir des informations concernant la qualité d'un contenu.
 
 \subsection{Différentes classes d'algorithmes}
 \subsubsection{User driven}
-Dans ce type d'algorithmes il est question de demander à l'utilisateur de qualifier la qualité d'un contenu qu'il a consulté~\cite{Tulungan2013}.
+Dans ce type d'algorithmes, il est question de demander à l'utilisateur de qualifier la qualité d'un contenu qu'il a consulté~\cite{Tulungan2013}.
+Par exemple, attribuer une note à un morceau de musique.
 Il s'agit le plus souvent d'une réputation explicite.
-Beaucoup de sites Web utilisent ce genre de systèmes.
+Beaucoup de sites Web utilisent ce genre de systèmes (Ebay, Amazon, ...).
 
 \subsubsection{Content driven}
 Dans ces systèmes de réputation, la qualité d'une contribution est évaluée par son contenu~\cite{Tulungan2013}.
 Contrairement aux algorithmes user driven, ici l'évaluation se fait à l'insu de l'utilisateur.
 Il s'agit le plus souvent d'un calcul de réputation implicite.
-On peut par exemple cité le systèmes de réputation de pages de l'encyclopédie Wikipedia (WikiTrust) qui utilise cette approche afin d'évaluer la qualité des articles~\cite{WikiTrustSite}.
+Par exemple, un clic sur un lien va augmenter la réputation du lien sans que l'utilisateur n'ait explicitement noté la qualité de ce lien.
+Le système de réputation de pages de l'encyclopédie Wikipedia (WikiTrust) utilise une approche content driven afin d'évaluer la qualité des articles~\cite{WikiTrustSite}.
 
 \subsubsection{Centralisé}
-Les systèmes de réputations peuvent avoir une architecture centralisée~\cite{JosangIsmailBoyd2007}.
+Les systèmes de réputation peuvent avoir une architecture centralisée~\cite{JosangIsmailBoyd2007}.
 Ils reposent alors sur la notion d'autorité centrale.
-Il s'agit d'un centre de réputation ayant pour rôle de collecter l'ensemble des évaluations auprès des différents participants, de calculer les différentes réputationsi, et de les rendre publiquement accessible pour l'ensemble des participants.
-On a donc deux caractéristiques importantes des systèmes centralisés :
+Il s'agit d'un centre de réputation ayant pour rôle de collecter l'ensemble des évaluations auprès des différents participants, de calculer les différentes réputations, et de les rendre publiquement accessibles par l'ensemble des participants.
+Il existe deux caractéristiques importantes des systèmes centralisés :
 \begin{description}
 	\item[Un protocole de communication centralisé]permettant de communiquer avec le centre de réputation, aussi bien pour soumettre une note, que pour consulter les différentes réputations.
 	\item[Un système de calcul de réputation centralisé]collectant les votes dans le but d'évaluer l'ensemble des participants.
@@ -162,8 +169,8 @@ On a donc deux caractéristiques importantes des systèmes centralisés :
 
 \subsubsection{Distribué}
 Les systèmes de réputation distribués ne possèdent pas d'autorité centrale à laquelle se réferrer et / ou soumettre des votes~\cite{JosangIsmailBoyd2007}.
-Par contre ces systèmes possèdent de multiples "entrepots" consultable à la demande.
-Il s'agit le plus souvent des différents participants au système qui enregistre l'historique de leur transactions.
+Par contre ces systèmes possèdent de multiples "entrepôts" consultables à la demande.
+Il s'agit le plus souvent des différents participants au système qui enregistrent l'historique de leur transactions.
 Comme pour les sytèmes centralisés, on observe deux caractéristiques fondamentales :
 \begin{description}
 	\item[Un protocole de communication décentralisé]offrant la possibilité aux différents participants de trouver et de consulter "l'historique" d'un membre avant une transaction.
@@ -175,12 +182,12 @@ Par ailleurs, les systèmes de réputation sont généralement tous fondés auto
 
 \subsubsection{La Formulation}
 C'est au cours de cette étape que l'algorithme de calcul de réputation est enoncé dans sa formulation théorique.
-Plus précisement, c'est au cours de cette phase que sont exprimés comment seront colléctée les données utilisées, ainsi que leurs type.
+Plus précisément, c'est au cours de cette phase qu'est exprimé comment seront colléctées les données utilisées, ainsi que leur type.
 Enfin, il est précisé sous quelle forme l'algorithme rendra son résultat. Celui-ci peut être binaire, discret ou continu.
 
 \subsubsection{L'Application}
 Il s'agit de l'implémentation de l'algorithme.
-Contrairement à la Formulation, cette étape prends en compte les différentes contraintes du milieu dans lequel l'algorithme va être appliqué.
+Contrairement à la Formulation, cette étape prend en compte les différentes contraintes du milieu dans lequel l'algorithme va être appliqué.
 Il s'agit alors de respecter la métrique voulue, tout en essayant d'être resistant aux attaques malicieuses.
 Ainsi il est notamment discuté des méthodes de stockage et de calculs qui vont être utilisées.
 
@@ -204,26 +211,26 @@ L'auto-promotion est un procédé qui vise à augmenter artificiellement la rép
 d'un acteur.
 
 L'approche classique pour atteindre cet objectif consiste à créer un grand nombre
-de comptes (ou à simuler un grand nombre d'acteurs anonyme quand le système le permet)
-et à émettre un grand nombre d'avis positifs à destiné de l'acteur que l'on souhaite
+de comptes (ou à simuler un grand nombre d'acteurs anonymes quand le système le permet)
+et à émettre un grand nombre d'avis positifs à destination de l'acteur que l'on souhaite
 promouvoir.
 
 Cette technique est également utilisée pour la discréditation artificielle.
 
 \subsubsection{L'usurpation d'identité}
 L'usurpation d'identité est une attaque qui vise le système d'authentification,
-elle à pour but de prendre l'identité d'un acteur donné pour lui faire faire des
-actions précise dans le but d'altérer artificiellement sa propre réputation ou celle
+elle a pour but de prendre l'identité d'un acteur donné pour lui faire faire des
+actions précises dans le but d'altérer artificiellement sa propre réputation ou celle
 d'un autre.
 
 \subsubsection{Le "whitewashing"}
-Le "whitewashing" correspond au fait pour une personne malicieuse de pouvoir annuler les pénalités (perte de réputations) acquise lors de son comportement.
+Le "whitewashing" correspond au fait pour une personne malicieuse de pouvoir annuler les pénalités (pertes de réputations) acquises du fait de son comportement.
 Il s'agit le plus souvent d'exploiter une vulnérabilité de l'algorithme afin de récupérer une réputation valable, dans le but de continuer son action malicieuse.
 
-\section{Présentation des algorithmes avec leurs approches mathématiques}
+\section{Présentation des algorithmes et leurs approches mathématiques}
 \subsection{Captcha}
 \subsubsection{Concept}
-Les captcha sont des tests de tests de Turing ayant pour but de différencier une machine d'un humain.
+Les captchas sont des tests de tests de Turing ayant pour but de différencier une machine d'un humain.
 Il s'agit le plus souvent d'une image représentant un mot déformé visuellement rendant ainsi les algorithmes de reconnaissance de caractères difficilement utilisables.
 Il peut aussi s'agir de reconnaissance de son, chose tout aussi difficile à traiter algorithmiquement.
 Il est alors demandé à l'utilisateur d'entrer la valeur de ce qu'il lui a été demandé de reconnaitre, afin de prouver qu'il est bien un humain.
@@ -233,26 +240,26 @@ Nous allons voir un algorithme de calcul de réputation reposant sur le concept 
 \subsubsection{Tulungan}
 Il s'agit d'un algorithme colaboratif (user-driven) permettant de donner une métrique sur le contenu d'une URL, en lui associant une ou plusieurs catégories d'URLs.
 L'algorithme part du postulat qu'un utilisateur peut à la fois contribuer à la classification de contenu, et noter du contenu.
-Il s'éxécute en trois phase : la phase d'Initialisation, la phase de Contribution et Notation, et la phase de Calcul~\cite{Tulungan2013}.
+Il s'exécute en trois phases : la phase d'Initialisation, la phase de Contribution et Notation et la phase de Calcul~\cite{Tulungan2013}.
 
-La phase d'Initialisation a lieu à chaque fois qu'un nouvel uilisateur apparaît, ou qu'une nouvelle catégorie d'URL est crée.
+La phase d'Initialisation a lieu à chaque fois qu'un nouvel uilisateur apparaît, ou qu'une nouvelle catégorie d'URLs est créée.
 Ainsi les valeurs de contributions et de notations sont initialisées avec une valeur proche de zéro.
 
-La phase de contribution et de notation permet à chaque participants de prendre part à la catégorisation en exprimant si un contenu web appartient ou non à différentes catégories.
-Par ailleurs au cours de cette phase seront choisit des noteurs potentiels (car ils sont susceptibles de donner une mauvaise métrique) en fonction de leurs précédentes contributions et notations.
-Ceci a pour but de séléctionner des personnes en rapport avec le contenu qu'il leurs sera demandé de noter.
+La phase de contribution et de notation permet à chaque participant de prendre part à la catégorisation en exprimant si un contenu web appartient ou non à différentes catégories.
+Par ailleurs au cours de cette phase seront choisis des noteurs potentiels (car ils sont susceptibles de donner une mauvaise métrique) en fonction de leurs précédentes contributions et notations.
+Ceci a pour but de séléctionner des personnes en rapport avec le contenu qu'il leur sera demandé de noter.
 Dernière étape de cette phase, la notation à proprement parler. Les participants doivent alors noter trois URLs en exprimant si elles sont bien catégorisées.
-Deux des URLs sont des URLs de contrôle, dont les catégories d'appartenances sont bien connues.
-La dernière est quand à elle l'URL dont on souhaite déterminer si la catégorisation est pertinente ou non.
+Deux des URLs sont des URLs de contrôle, dont les catégories d'appartenance sont bien connues.
+La dernière est quant à elle l'URL dont on souhaite déterminer si la catégorisation est pertinente ou non.
 Les trois URLs sont présentées de manière à ce que l'utilisateur ne sache pas laquelle est la réelle cible de l'algorithme.
-L'algorithme considère alors que si un utilisateur réponds correctement aux deux URLs connu, alors il est probable que celui-ci ai répondu de manière sérieuse à la troisième.
+L'algorithme considère alors que si un utilisateur répond correctement aux deux URLs connus, alors il est probable que celui-ci ait répondu de manière sérieuse à la troisième.
 Cette approche peut être comparée aux Captcha.
 
 La dernière phase de l'algorithme consiste à reévaluer l'ensemble des réputations des URLs, des noteurs et des contributeurs.
 
 \subsubsection{Forces}
-Tulungan est un algorithme dit "consensu-independant", car il n'a besoins que de 20\% de participants honnêtes pour être efficace, là où des algorithmes plus classiques necessitent une proportion de participants honnêtes de l'ordre de 50\%.
-Ce traits lui permet ainsi de résister à l'auto-promotion (modélisé dans l'article par une attaque Sybile)~\cite{Tulungan2013}.
+Tulungan est un algorithme dit "consensus-independant", car il n'a besoins que de 20\% de participants honnêtes pour être efficace, là où des algorithmes plus classiques nécessitent une proportion de participants honnêtes de l'ordre de 50\%.
+Ce trait lui permet ainsi de résister à l'auto-promotion (modélisé dans l'article par une attaque Sybile)~\cite{Tulungan2013}.
 
 \subsubsection{Faiblesses}
 Tulungan est relativement couteux en "main d'oeuvre humaine" ce qui peut être problématique dans certains cas, et qui interdit de l'utiliser dans un contexte entièrement automatisé.
@@ -269,34 +276,34 @@ afin de déterminer une réputation représentant les actions futures.
 \subsubsection{Algorithme}
 L'algorithme comporte une partie qui calcul la réputation des utilisateurs à partir d'un ensemble d'entrées (comme les notes d'eBay).
 Le point centrale est la fonction de densité Beta qui est utilisée pour représenter la probabilité d'événements binaires (feedback positif ou négatif).
-Ensuite, la fonction de réputation se repose sur la fonction Beta, mais au lieu de fournir une entrée binaire (un couple de nombre de feedback positif et négatif), fournis un couple de degrés de réputation.
-Une fonction d'évaluation de la réputation obtenue qui permet de convertire un résultat mathématique en résultat humainement interprêtable via une conversion en probabilité.
+Ensuite, la fonction de réputation se repose sur la fonction Beta, mais au lieu de fournir une entrée binaire (un couple de nombre de feedback positif et négatif), fournie un couple de degrés de réputation.
+Une fonction d'évaluation de la réputation obtenue qui permet de convertir un résultat mathématique en résultat humainement interprêtable via une conversion en probabilité.
 La récolte des données est un point important, car afin d'établir une réputation de nombreuses sources sont exploitées et de nombreux feedbacks sont récoltés provenant de différent agents. Ces agents n'ont pas tous la même réputation, ainsi, les feedbacks sont pondérés en fonction de la réputation de ceux qui les émettent.
-Ces données sont à filtrer en fonction de leur ancienneté, en effet, un agent peut changer de comportement au cours du temps, le modèle inclura donc un facteur d'oublie pour résoudre ce problème.
+Ces données sont à filtrer en fonction de leur ancienneté, en effet, un agent peut changer de comportement au cours du temps, le modèle inclura donc un facteur d'oubli pour résoudre ce problème.
 
 Enfin, une seconde partie qui vise à stocker et à accéder aux réputations (centralisée comme chez eBay ou décentralisée comme dans PGP).
 
 \subsubsection{Forces}
-Il s'agit d'un système simple et suffisemment flexible pour s'adapter à un grand nombre de situations, il permet de résister à l'auto-promotion, à la discréditassion artificielle ainsi qu'aux changements de comportements et il permet de supporté à la fois une architecture centralisée et décentralisée.
+Il s'agit d'un système simple et suffisemment flexible pour s'adapter à un grand nombre de situations, il permet de résister à l'auto-promotion, à la discréditation artificielle ainsi qu'aux changements de comportement et il permet de supporter à la fois une architecture centralisée et décentralisée.
 
 \subsubsection{Faiblesses}
-En revanche, cet algorithme met beaucoup de contraintes sur les données entrantes et il présuppose que l'authenfication est en place et est robuste, ce qui ne le prémunis pas, le cas contraire des attaques de la part de multiples comptes ou d'anonymes.
+En revanche, cet algorithme met beaucoup de contraintes sur les données entrantes et il présuppose que l'authentification est en place et est robuste, ce qui ne le prémunis pas le cas contraire des attaques de la part de multiples comptes ou d'anonymes.
 
 \subsection{2-Phase Machine Learning}
 \subsubsection{Concept}
 Ce type d'algorithme agit en deux temps.
-Comme les documents à évaluer sont souvent complexe, il s'agit dans la première phase, de récupérer un ensemble de métriques sensées caractériser le contenu à évaluer.
+Comme les documents à évaluer sont souvent complexes, il s'agit dans la première phase, de récupérer un ensemble de métriques sensées caractériser le contenu à évaluer.
 Dans le cas de WikiTrust, algorithme que nous allons par la suite détailler, il s'agit d'une quinzaine d'attributs, dont :
 \begin{itemize}
 	\item La réputation de l'auteur
-	\item L'anonimat de l'auteur
+	\item L'anonymat de l'auteur
 	\item Le temps entre les révisions du contenu
 \end{itemize}
-Viens ensuite la deuxième phase de l'algorithme, où sont utilisés les métriques précédement calculées afin de calculer l'indice de réputation.
+Vient ensuite la deuxième phase de l'algorithme, où sont utilisées les métriques précédement calculées afin de calculer l'indice de réputation.
 Dans le cas de WikiTrust, il s'agit d'un arbre de décision préalablement entrainé sur des jeux de tests.
 
 \subsubsection{WikiTrust}
-Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article (centent driven).
+Il s'agit de l'algorithme utilisé par Wikipedia pour évaluer la réputation des auteurs et des articles. Il repose sur l'analyse des modifications de contenu d'un article (content driven).
 En effet, si une personne modifie un article sur l'encyclopédie, la réputation de l'article varie de la manière suivante~\cite{WikiTrust2010}~\cite{WikiTrustSite} :
 ce qui a été réécrit gagne un petit montant de réputation pondéré par la réputation de l'auteur,
 et la partie restée inchangée gagne elle aussi en réputation en fonction de la réputation du modificateur, et de son temps resté inchangé.
@@ -306,7 +313,7 @@ La réputation d'un auteur est calculée d'une manière similaire, à savoir que
 la réputation de l'auteur original est elle aussi modifié en fonction de la quantité de contenu modifié, pondérée par la réputation du modificateur.
 
 \subsubsection{Forces}
-WikiTrust part du postulat que les personnes malveillante possède pas ou peu de réputations, ce qui rends l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
+WikiTrust part du postulat que les personnes malveillantes possèdent pas ou peu de réputations, ce qui rend l'algorithme de calcul de réputation resistant à l'auto promotion~\cite{Tulungan2013}.
 
 \subsubsection{Faiblesses}
 Partant du même postulat, une personne possédant une haute réputation, et décidant de devenir malveillante à postériori, peu alors corrompre le système.
@@ -314,7 +321,7 @@ Partant du même postulat, une personne possédant une haute réputation, et dé
 \subsection{Network flow}
 \subsubsection{Concept}
 Les algorithmes de type Network Flow sont une application de la théorie des graphes.
-Il s'agit de donner à un noeud (supposé extrèmement fiable) une valeur de départ appelée "énergie", qui dans le cadre des systèmes de réputations, correspond à une valeur de confiance distribuable~\cite{ZieglerLausen2005}.
+Il s'agit de donner à un noeud (supposé extrèmement fiable) une valeur de départ appelée "énergie", qui dans le cadre des systèmes de réputation, correspond à une valeur de confiance distribuable~\cite{ZieglerLausen2005}.
 Viens ensuite l'étape au cours de laquelle le noeud de départ va devoir "énergiser" les noeuds avec lesquels il a eu un contact (au sens transaction nécessitant une confiance), à hauteur de la qualité de l'échange.
 Cependant, le noeud ne peut distribuer qu'un nombre finit d'"énergies" correspondant à la valeur de son énergie de départ.
 Il devra donc diviser celle-ci afin de la distribuer pour l'ensemble des noeuds, chaque noeud recevant un montant pondéré par la qualité de la transaction.
@@ -328,23 +335,23 @@ EigenTrust est un algorithme basé sur une structure Network flow. Il est utilis
 Il fonctionne en plusieurs étapes.
 
 \paragraph{Normalisation de la confiance locale}
-Afin d'éviter qu'un participant malicieu puisse donner des valeurs de confiances arbitrairement élevée à d'autres participants malicieux, et au contraire des valeurs de confiance basse aux participants honnêtes, l'algorithme commence par effectuer une normalisation de la confiance locale selon la formule suivante :
+Afin d'éviter qu'un participant malicieux puisse donner des valeurs de confiance arbitrairement élevées à d'autres participants malicieux, et au contraire des valeurs de confiance basses aux participants honnêtes, l'algorithme commence par effectuer une normalisation de la confiance locale selon la formule suivante :
 \begin{center}
 	$c_{ij} = \frac{\max{(s_{ij},0)}}{\sum \max{(s_{ij},0)}}$
 \end{center}
 Avec $s_{ij} = \sum tr_{ij}$ et $tr_{ij}$ correspondant à la qualité d'une transaction entre un participant $i$ et un participant $j$, et pouvant prendre pour valeur $1$ ou $-1$.
 \paragraph{}
 Cette normalisation permet alors de ramener la confiance locale entre $0$ et $1$.
-Par ailleurs elle permet de pouvoir comparer les confiances d'un noeud par rapports aux différents noeuds qu'il a noté, sans pour autant savoir s'il s'agit de bonnes ou de mauvaises réputations.
+Par ailleurs elle permet de pouvoir comparer les confiances d'un noeud par rapport aux différents noeuds qu'il a notés, sans pour autant savoir s'il s'agit de bonnes ou de mauvaises réputations.
 
-\paragraph{Aggrégation des valeurs de confiances locale}
-Viens ensuite une étape d'aggrégation des différentes valeurs de confiances locales pour chaque noeud.
-Supposons qu'un noeud $i$ souhaite aggreger les différentes valeurs de confiances locale d'un noeud $k$, il va alors demander à tous les noeuds qu'il connait la confiance que ceux-ci donnent au noeud $k$, et ponderera cette confiance par la confiance qu'il accorde aux noeuds intérogés.
+\paragraph{Aggrégation des valeurs de confiance locale}
+Vient ensuite une étape d'aggrégation des différentes valeurs de confiance locale pour chaque noeud.
+Supposons qu'un noeud $i$ souhaite aggreger les différentes valeurs de confiance locale d'un noeud $k$, il va alors demander à tous les noeuds qu'il connait la confiance que ceux-ci donnent au noeud $k$, et pondèrera cette confiance par la confiance qu'il accorde aux noeuds interrogés.
 On a donc la relation suivante :
 \begin{center}
 	$t_{ik} = \sum_{j} c_{ij}c_{jk}$
 \end{center}
-Si cette étape est étendu à une echelle globale, à savoir si un noeud demande à ses noeuds voisins qui eux même demandent à leurs noeuds voisins, et ainsi de suite, $t$ converge alors vers la valeur de confiance que l'ensemble des participants a envers un noeud.
+Si cette étape est étendue à une echelle globale, à savoir si un noeud demande à ses noeuds voisins qui eux même demandent à leurs noeuds voisins, et ainsi de suite, $t$ converge alors vers la valeur de confiance que l'ensemble des participants a envers un noeud.
 
 Enfin, notons ici qu'il s'agit d'un algorithme user driven décentralisé, même s'il possède quelques caractéristiques d'un système centralisé, telle que le fait que certains noeuds possèdent une confiance absolue non revendiquable (les noeuds de départ).
 
@@ -356,7 +363,7 @@ Le système est cependant faiblement résistant à la notion de consensus.
 En effet, il suffirait d'un nombre de noeuds malicieux appartenant à un même groupe, et représentant 40\% des participants au système afin d'influencer le système de réputation.
 Dans la pratique, il est quasiment impossible d'obtenir une telle proportion de noeuds malicieux dans un réseau Peer to Peer.
 
-Enfin, les noeuds considérés comme sûre peuvent représenter des points d'attaques particulièrement interessant si l'on souhaite corrompre ce type de systèmes.
+Enfin, les noeuds considérés comme sûrs peuvent représenter des points d'attaques particulièrement interessants si l'on souhaite corrompre ce type de système.
 
 \subsection{Bayesian}
 \subsubsection{Concept}
@@ -425,7 +432,7 @@ $D_{i}$ est l'ensemble des travaux notés par l'auteur \textit{i}.
 
 $D_{i}^{\epsilon}$ est l'ensemble des travaux qui n'ont pas encore été notés par l'auteur \textit{i}, mais dont il a été sélectionné comme noteur.
 
-Cette formule permet non seulement de pénaliser les mauvais noteurs (ceux qui donnent des notes volontairement trop élevées ou trop basses), mais également ceux qui ne notent pas grâce au rapport $\frac{|D_{i}^{\epsilon}|}{|D_{i}|}$.
+Cette formule permet non seulement de pénaliser les mauvais noteurs (ceux qui donnent des notes volontairement trop élevées ou trop basses), mais également ceux qui ne notent pas grâce au rapport $$\frac{|D_{i}^{\epsilon}|}{|D_{i}|}$$.
 
 	\item[Calculer la réputation de l'auteur] La formule permettant de calculer la réputation de l'auteur est la suivante :
 $$
@@ -455,15 +462,15 @@ Une des limites de ce système de réputation est qu'un bon noteur peut obtenir 
 	&User&Content&Centralisé&Décentralisé\tabularnewline
 	&driven&driven&&\tabularnewline
 	\hline
-	Tulungan&Oui&Non&Oui&Non\tabularnewline
+	Tulungan&\cmark&\xmark&\cmark&\xmark\tabularnewline
 	\hline
-	Loi de Beta&Oui&Non&Oui&Oui\tabularnewline
+	Loi de Beta&\cmark&\xmark&\cmark&\cmark\tabularnewline
 	\hline
-	WikiTrust&Non&Oui&Oui&Non\tabularnewline
+	WikiTrust&\xmark&\cmark&\cmark&\xmark\tabularnewline
 	\hline
-	EigenTrust&Oui&Non&Non&Oui\tabularnewline
+	EigenTrust&\cmark&\xmark&\xmark&\cmark\tabularnewline
 	\hline
-	RaterRating&Oui&Non&Oui&Non\tabularnewline
+	RaterRating&\cmark&\xmark&\cmark&\xmark\tabularnewline
 	\hline
 \end{tabular}
 \end{center}
@@ -475,15 +482,15 @@ Une des limites de ce système de réputation est qu'un bon noteur peut obtenir 
 	&Auto Promotion&Whitewashing&Usurpation\tabularnewline
 	&&&d'identité\tabularnewline
 	\hline
-	Tulungan&Non&-&-\tabularnewline
+	Tulungan&\xmark&-&-\tabularnewline
 	\hline
-	Loi de Beta&Non&-&Oui\tabularnewline
+	Loi de Beta&\xmark&-&\cmark\tabularnewline
 	\hline
-	WikiTrust&Non&Non&-\tabularnewline
+	WikiTrust&\xmark&\xmark&-\tabularnewline
 	\hline
-	EigenTrust&Oui&Non&-\tabularnewline
+	EigenTrust&\xmark&\cmark&-\tabularnewline
 	\hline
-	Rater Rating&Non&-&-\tabularnewline
+	Rater Rating&\xmark&-&-\tabularnewline
 	\hline
 \end{tabular}
 \end{center}
@@ -494,77 +501,6 @@ On a ainsi pu voir qu'ils reposaient sur la notion de confiance, qu'ils posséda
 Ont aussi été abordées les différentes classes d'attaques sur les systèmes de réputation.
 Enfin certaines grandes familles de systèmes de réputation ont été présentées, avec un exemple d'application réel du système.
 Cependant, nous ne nous sommes pas intéressé au respect de la vie privée des différents participants, et du rapport entre l'anonymat et la qualité des jugement apportés.
-
-
-\section{Etat de l'art}
-Il s'agit dans cette partie de voir quels sont les différents systèmes de réputations actuels, et de les comparer.
-
-
-\subsection{Karma}
-\subsubsection{Concept}
-Le Karma permet d'évaluer la réputation uniquement d'une personne au sein d'une communauté Web. Le nombre de points Karma est attribué en fonction :
-\begin{itemize}
-	\item De la vieillesse de l'utilisateur au sein de la communauté
-	\item Des actions auxquelles il a participé
-	\item Des résultats qu'il a obtenus
-	\item De ce que pense les autres utilisateurs
-\end{itemize}
-Inclure le Karma dans le système de réputation d'un site Web permet de rendre celui-ci plus performant et plus proche de la réalité. Il est d'ailleurs rarement utilisé seul pour cacluler une réputation mais associé à d'autres algorithmes.
-
-Il existe deux formes de Karma et une combinaison :
-\begin{description}
-	\item[Participation] calcule le Karma en fonction de la participation du membre de a communauté
-	\item[Qualité] calcule le Karma en fonction de la qualité des contributions du membre
-	\item[Robuste] est une combinaison des deux précédentes
-\end{description}
-
-\subsubsection{Calcul du Karma, modèle de participation}
-La calcul de la réputation grâce à ce modèle se fait via l'attribution de points. Lorsqu'un membre effectue une action au sein de la communauté, un nombre de points lui est attribué en fonction de cette action. La réputation de ce membre est donc la somme des points obtenus.
-
-Il existe également, un système de points négatifs. Lorsqu'un membre effectue une mauvaise action, on lui attribue un nombre de points négatifs correspondant à cette mauvaise action. Le système est le même que celui des points positifs, excepté qu'un score élevé correspond à une mauvaise réputation.
-
-\subsubsection{Calcul du Karma, modèle de qualité}
-Dans ce modèle, le nombre de contributions n'a pas d'importance. Seule compte la qualité de ces dernières. 
-
-Le modèle de Feedback utilisé par eBay décrit précédemment est un exemple de modèle de qualité du Karma.
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=12cm]{karma.png} 
-	\end{center}
-	\caption{Modèle robuste~\cite{FarmerGlass2010}}
-	\label{robusteKarma}
-\end{figure}
-
-\subsubsection{Calcul du Karma, modèle robuste}
-En combinant les deux modèles précédents, on obtient le modèle robuste, comme le montre la figure~\ref{robusteKarma}. 
-
-\subsubsection{Reddit.com}
-Reddit.com est un site communautaire qui permet à chaque membre de soumettre des liens aux autres membres qui peuvent ensuite voter pour ce lien. Les membres peuvent également commenter les liens proposer et voter pour ou contre les commentaires.
-
-A chaque membre est associé un "Karma". Ce dernier est calculé en fonction des votes des membres. Lorsqu'un membre vote pour un lien proposé, le karma du membre qui a proposé le lien est augmenté d'un point. Lorsqu'un membre vote contre un lien proposé, le karma du membre qui a proposé le lien est diminué d'un point. Si le membre a obtenu plus de votes négatifs que de votes positifs, son karma est donc négatif. Les liens proposés par des membres qui ont un bon karma sont plus facilement visibles par les autres membres, que les liens proposés par des membres qui ont un moins bon karma~\cite{RedditTroll}.
-
-De même, le karma d'un membre est augmenté d'un point lorsqu'un autre membre vote pour un de ses commentaires et est diminué d'un point lorsqu'un autre membre vote contre~\cite{RedditTroll}.
-
-\subsubsection{Comment contrôler le karma ?}
-Expliquer comment reddit tente de contrer les trolls ?
-
-
-\subsection{Système de Digg}
-\subsubsection{Concept}
-Digg est un site web de partage d'article communautaire, un membre lit un article sur internet ou écrit un article sur un espace personnel, puis il le soumet à Digg.
-Ensuite les autres membres du site votent pour ou contre cet article et s'il obtient assez de voix il est publié en page d'accueil de Digg.
-
-\subsubsection{Algorithme}
-L'algorithme est donc simple : il n'y a pas de votes négatif, la réputation d'un article ne peut que croître, une fois le nombre de voix critique atteint, il est publié en première page, si non, au bout d'un certain temps, l'article est supprimé des propositions.
-
-\subsubsection{Forces}
-L'un des principaux avantages est que ce système ne permet pas de discréditation et qu'il n'attise pas l'augmentation artificielle car l'enjeu est moindre, il s'agit d'une question de temps.
-
-\subsubsection{Faiblesses}
-En revanche il ne permet pas de réprésentation explicite du désaccord des lecteurs, pour cela il faudrait opposer le nombre de lecteurs et le nombre de votants.
-
-
 
 %------------------------------------------------
 
